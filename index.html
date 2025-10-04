@@ -1,4 +1,3 @@
-```jsx
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -36,11 +35,9 @@ const App = () => {
   const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
-    // Show popup after 5 seconds
     const timer = setTimeout(() => {
       setShowPopup(true);
     }, 5000);
-    
     return () => clearTimeout(timer);
   }, []);
 
@@ -105,8 +102,8 @@ const App = () => {
     publisher: "Apuleyo Ediciones",
     description: "Una historia encantadora sobre una sirenita diferente que descubre el poder del amor propio, la amistad y la importancia de cuidar nuestro mar. Obesita enseña a los niños que ser diferente es maravilloso y que cada uno tiene un valor único.",
     price: "$15.99",
-    coverImage: "https://placehold.co/400x500/3b82f6/ffffff?text=Obesita+la+Sirenita",
-    videoUrl: "https://placehold.co/800x450/1e40af/ffffff?text=Video+Trailer"
+    coverImage: "https://via.placeholder.com/400x500/3b82f6/ffffff?text=Obesita+la+Sirenita",
+    videoUrl: "https://via.placeholder.com/800x450/1e40af/ffffff?text=Video+Trailer"
   };
 
   const valuesData = [
@@ -114,31 +111,31 @@ const App = () => {
       id: 'respect', 
       title: 'Respeto', 
       icon: <Heart className="w-12 h-12 text-pink-500" />,
-      description: 'Enseñamos a los niños a respetar a todos, sin importar sus diferencias, y a respetarse a sí mismos.'
+      description: 'Enseñamos a respetar a todos y a valorar las diferencias.'
     },
     { 
       id: 'diversity', 
       title: 'Diversidad', 
       icon: <Ocean className="w-12 h-12 text-blue-500" />,
-      description: 'Celebramos todas las formas de ser, mostrando que la diversidad enriquece nuestro mundo.'
+      description: 'Celebramos la diversidad como una riqueza única.'
     },
     { 
       id: 'friendship', 
       title: 'Amistad', 
       icon: <Users className="w-12 h-12 text-green-500" />,
-      description: 'La verdadera amistad se basa en la lealtad, el compromiso y el apoyo mutuo.'
+      description: 'Fomentamos la lealtad y el apoyo mutuo.'
     },
     { 
       id: 'selflove', 
       title: 'Autoestima', 
       icon: <Star className="w-12 h-12 text-yellow-500" />,
-      description: 'Creer en uno mismo es el primer paso para alcanzar grandes cosas y ser feliz.'
+      description: 'Inspiramos a creer en uno mismo y brillar con confianza.'
     },
     { 
       id: 'marine', 
       title: 'Mar y Ecosistema', 
       icon: <Ocean className="w-12 h-12 text-teal-500" />,
-      description: 'Conectamos con el mar para aprender a cuidar nuestro ecosistema marino y su biodiversidad.'
+      description: 'Promovemos el cuidado del mar y su biodiversidad.'
     }
   ];
 
@@ -171,24 +168,22 @@ const App = () => {
   ];
 
   const handleSubscribe = () => {
-    alert('¡Gracias por suscribirte! Recibirás actualizaciones sobre nuevos cuentos y actividades especiales.');
+    alert('¡Gracias por suscribirte! Recibirás actualizaciones sobre nuevos cuentos y actividades.');
     setShowPopup(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 to-yellow-50 font-sans text-gray-800">
       {/* Header */}
-      <header className="bg-white shadow-lg sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-teal-500 to-blue-500 shadow-lg sticky top-0 z-50 text-white">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center">
-                <Ocean className="w-8 h-8 text-white" />
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                <Ocean className="w-8 h-8 text-teal-500" />
               </div>
-              <h1 className="text-2xl font-bold text-blue-800">Obesita la Sirenita</h1>
+              <h1 className="text-2xl font-bold">Obesita la Sirenita</h1>
             </div>
-            
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6">
               {navItems.map((item) => (
                 <div key={item.id} className="relative group">
@@ -196,8 +191,8 @@ const App = () => {
                     onClick={() => item.subItems ? setActiveDropdown(activeDropdown === item.id ? null : item.id) : setSelectedCategory(item.id)}
                     className={`flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
                       selectedCategory === item.id 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'text-gray-700 hover:bg-blue-50'
+                        ? 'bg-white text-teal-500' 
+                        : 'hover:bg-white hover:text-teal-500'
                     }`}
                   >
                     <item.icon className="w-5 h-5" />
@@ -206,10 +201,9 @@ const App = () => {
                       <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.id ? 'rotate-180' : ''}`} />
                     )}
                   </button>
-                  
                   {item.subItems && (
                     <div 
-                      className={`absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-300 ${
+                      className={`absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 text-gray-800 ${
                         activeDropdown === item.id ? 'opacity-100 visible' : 'opacity-0 invisible'
                       }`}
                     >
@@ -220,7 +214,7 @@ const App = () => {
                             setSelectedCategory(subItem.id);
                             setActiveDropdown(null);
                           }}
-                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                          className="block w-full text-left px-4 py-2 hover:bg-teal-50 transition-colors"
                         >
                           {subItem.label}
                         </button>
@@ -230,133 +224,179 @@ const App = () => {
                 </div>
               ))}
             </nav>
-            
-            {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-blue-800"
+              className="md:hidden p-2 text-white hover:text-yellow-300"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
-        </div>
-        
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-white border-t border-gray-200"
-            >
-              <div className="container mx-auto px-4 py-4 space-y-4">
-                {navItems.map((item) => (
-                  <div key={item.id}>
-                    <button 
-                      onClick={() => {
-                        if (item.subItems) {
-                          setActiveDropdown(activeDropdown === item.id ? null : item.id);
-                        } else {
-                          setSelectedCategory(item.id);
-                          setIsMenuOpen(false);
-                        }
-                      }}
-                      className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${
-                        selectedCategory === item.id 
-                          ? 'bg-blue-100 text-blue-800' 
-                          : 'text-gray-700 hover:bg-blue-50'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <item.icon className="w-5 h-5" />
-                        <span>{item.label}</span>
-                      </div>
-                      {item.subItems && (
-                        <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.id ? 'rotate-180' : ''}`} />
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="md:hidden bg-white text-gray-800 border-t border-gray-200"
+              >
+                <div className="container mx-auto px-4 py-4 space-y-4">
+                  {navItems.map((item) => (
+                    <div key={item.id}>
+                      <button 
+                        onClick={() => {
+                          if (item.subItems) {
+                            setActiveDropdown(activeDropdown === item.id ? null : item.id);
+                          } else {
+                            setSelectedCategory(item.id);
+                            setIsMenuOpen(false);
+                          }
+                        }}
+                        className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${
+                          selectedCategory === item.id 
+                            ? 'bg-teal-100 text-teal-700' 
+                            : 'hover:bg-teal-50'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <item.icon className="w-5 h-5" />
+                          <span>{item.label}</span>
+                        </div>
+                        {item.subItems && (
+                          <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.id ? 'rotate-180' : ''}`} />
+                        )}
+                      </button>
+                      {item.subItems && activeDropdown === item.id && (
+                        <div className="pl-8 pt-2 space-y-2">
+                          {item.subItems.map((subItem) => (
+                            <button
+                              key={subItem.id}
+                              onClick={() => {
+                                setSelectedCategory(subItem.id);
+                                setIsMenuOpen(false);
+                                setActiveDropdown(null);
+                              }}
+                              className="block w-full text-left px-3 py-2 hover:bg-teal-50 transition-colors"
+                            >
+                              {subItem.label}
+                            </button>
+                          ))}
+                        </div>
                       )}
-                    </button>
-                    
-                    {item.subItems && activeDropdown === item.id && (
-                      <div className="pl-8 pt-2 space-y-2">
-                        {item.subItems.map((subItem) => (
-                          <button
-                            key={subItem.id}
-                            onClick={() => {
-                              setSelectedCategory(subItem.id);
-                              setIsMenuOpen(false);
-                              setActiveDropdown(null);
-                            }}
-                            className="block w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
-                          >
-                            {subItem.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-400 to-teal-400 text-white py-16">
+      <section className="relative overflow-hidden bg-gradient-to-r from-teal-500 to-yellow-300 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2 space-y-6">
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                ¡Bienvenidos al Mundo Mágico de <span className="text-yellow-300">Obesita la Sirenita</span>!
+                ¡Explora el mundo de <span className="text-teal-800">Obesita la Sirenita</span>!
               </h1>
               <p className="text-xl">
-                Una aventura submarina llena de valores, amistad y amor propio que enseñará a tus hijos a aceptarse tal como son y a cuidar nuestro mar.
+                Una aventura submarina que enseña amor propio, amistad y el cuidado del mar a través de una sirenita única.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="bg-white text-blue-800 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors">
-                  Comprar Ahora
+                <button className="bg-white text-teal-600 px-6 py-3 rounded-full font-semibold hover:bg-teal-100 transition-colors">
+                  Descubre Más
                 </button>
-                <button className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-800 transition-colors">
-                  Ver Trailer
+                <button className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-teal-600 transition-colors">
+                  Ver Video
                 </button>
               </div>
             </div>
             <div className="lg:w-1/2 relative">
-              <div className="aspect-video bg-blue-200 rounded-xl overflow-hidden">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute -top-10 -left-10 w-32 h-32 bg-yellow-200 rounded-full opacity-30"
+              />
+              <div className="aspect-video bg-teal-200 rounded-xl overflow-hidden">
                 <img 
-                  src="https://placehold.co/800x450/1e40af/ffffff?text=Obesita+la+Sirenita+Trailer" 
-                  alt="Obesita la Sirenita" 
+                  src={bookData.coverImage} 
+                  alt={bookData.title} 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center">
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-400 rounded-full flex items-center justify-center"
+              >
+                <Ocean className="w-12 h-12 text-white" />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-teal-600 to-transparent"></div>
+      </section>
+
+      {/* Book Section */}
+      <section className="py-16 bg-gradient-to-br from-teal-50 to-yellow-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-teal-800 mb-4">{bookData.title}</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              {bookData.description}
+            </p>
+          </div>
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="lg:w-1/2">
+              <div className="bg-white rounded-xl shadow-lg p-6">
                 <img 
-                  src="https://placehold.co/100x100/ff9900/ffffff?text=Caballito+de+Mar" 
-                  alt="Caballito de Mar" 
-                  className="w-20 h-20 rounded-full"
+                  src={bookData.coverImage} 
+                  alt={bookData.title} 
+                  className="w-full rounded-lg mb-6"
                 />
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-teal-800">Detalles</h3>
+                  <p className="text-gray-600">Autor: {bookData.author}</p>
+                  <p className="text-gray-600">Ilustrador: {bookData.illustrator}</p>
+                  <p className="text-gray-600">Editorial: {bookData.publisher}</p>
+                  <p className="text-lg font-semibold text-teal-800">Precio: {bookData.price}</p>
+                  <button className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 transition-colors w-full">
+                    Comprar Ahora
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h4 className="text-xl font-bold text-teal-800 mb-4">Características</h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2">
+                  <li>Edad: 4-8 años</li>
+                  <li>48 páginas a todo color</li>
+                  <li>Actividades interactivas</li>
+                  <li>Impresión ecológica</li>
+                </ul>
+                <div className="mt-6">
+                  <h5 className="font-semibold text-teal-800 mb-2">Formatos</h5>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Físico</span>
+                    <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Digital</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Underwater Decorations */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-500 to-transparent"></div>
-        <div className="absolute top-10 right-10 w-16 h-16 bg-blue-200 rounded-full opacity-30"></div>
-        <div className="absolute top-20 left-20 w-12 h-12 bg-yellow-200 rounded-full opacity-30"></div>
       </section>
 
       {/* Values Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Los Valores que Enseñamos</h2>
+            <h2 className="text-3xl font-bold text-teal-800 mb-4">Valores que Inspiran</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Nuestros cuentos están diseñados para transmitir valores fundamentales que ayudarán a tus hijos a crecer con confianza, empatía y amor por ellos mismos y por el mundo que les rodea.
+              Cada cuento está diseñado para enseñar lecciones valiosas a los niños.
             </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {valuesData.map((value, index) => (
               <motion.div
@@ -364,11 +404,11 @@ const App = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-gradient-to-br from-teal-50 to-yellow-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="flex flex-col items-center text-center">
                   {value.icon}
-                  <h3 className="text-xl font-bold text-blue-800 mt-4 mb-2">{value.title}</h3>
+                  <h3 className="text-xl font-bold text-teal-800 mt-4 mb-2">{value.title}</h3>
                   <p className="text-gray-600">{value.description}</p>
                 </div>
               </motion.div>
@@ -377,306 +417,19 @@ const App = () => {
         </div>
       </section>
 
-      {/* Book Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Obesita la Sirenita</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              El primer cuento de nuestra querida Obesita, donde descubrirá el poder del amor propio, la amistad y la importancia de cuidar nuestro mar.
-            </p>
-          </div>
-          
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="lg:w-1/2">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <img 
-                  src="https://placehold.co/400x500/3b82f6/ffffff?text=Obesita+la+Sirenita" 
-                  alt="Obesita la Sirenita" 
-                  className="w-full rounded-lg mb-6"
-                />
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-blue-800">{bookData.title}</h3>
-                  <p className="text-gray-600">Por {bookData.author}</p>
-                  <p className="text-gray-600">Ilustrado por {bookData.illustrator}</p>
-                  <p className="text-gray-600">Publicado por {bookData.publisher}</p>
-                  <div className="pt-4">
-                    <p className="text-lg font-semibold text-blue-800 mb-2">Precio: {bookData.price}</p>
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors w-full">
-                      Comprar Ahora
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="lg:w-1/2">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h4 className="text-xl font-bold text-blue-800 mb-4">Sinopsis</h4>
-                <p className="text-gray-600 mb-6">{bookData.description}</p>
-                
-                <div className="mb-6">
-                  <h5 className="font-semibold text-blue-800 mb-2">Características:</h5>
-                  <ul className="list-disc list-inside text-gray-600 space-y-1">
-                    <li>Edad recomendada: 4-8 años</li>
-                    <li>48 páginas a todo color</li>
-                    <li>Incluye actividades interactivas</li>
-                    <li>Impreso con tintas ecológicas</li>
-                  </ul>
-                </div>
-                
-                <div className="mt-6">
-                  <h5 className="font-semibold text-blue-800 mb-2">Formatos disponibles:</h5>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Físico</span>
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Digital</span>
-                    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Audio</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Lo que dicen nuestros lectores</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Padres, educadores y niños comparten sus experiencias con nuestras historias llenas de valores y magia submarina.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "María González",
-                role: "Madre de dos niños",
-                quote: "Mis hijos adoran a Obesita y han aprendido a aceptarse tal como son. Este cuento ha cambiado nuestra forma de hablar sobre la autoestima en casa."
-              },
-              {
-                name: "Carlos Martínez",
-                role: "Maestro de primaria",
-                quote: "Utilizo este cuento en mi clase para enseñar valores. Los niños se identifican con Obesita y aprenden importantes lecciones sobre amistad y respeto."
-              },
-              {
-                name: "Lucía Pérez",
-                role: "Educadora infantil",
-                quote: "La historia de Obesita es perfecta para trabajar la diversidad y el cuidado del medio ambiente. Los niños quedan fascinados con el mundo submarino."
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="font-bold text-blue-800">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 italic">"{testimonial.quote}"</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Social Media Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Síguenos en redes sociales</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Únete a nuestra comunidad y descubre más contenido, actividades y novedades sobre Obesita la Sirenita y sus amigos submarinos.
-            </p>
-          </div>
-          
-          <div className="flex justify-center space-x-6">
-            {socialMedia.map((platform, index) => (
-              <motion.a
-                key={platform.name}
-                href={platform.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ scale: 0, rotate: -180 }}
-                whileInView={{ scale: 1, rotate: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`p-4 rounded-full ${platform.color} text-white hover:scale-110 transition-transform`}
-              >
-                <platform.icon className="w-6 h-6" />
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Preguntas Frecuentes</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Aquí encontrarás respuestas a las preguntas más comunes sobre nuestros cuentos y valores.
-            </p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              {
-                question: "¿Para qué edad está recomendado el cuento de Obesita la Sirenita?",
-                answer: "El cuento está diseñado para niños entre 4 y 8 años, aunque puede leerse en voz alta a niños más pequeños. Las ilustraciones y el lenguaje simple hacen que sea accesible para esta edad."
-              },
-              {
-                question: "¿Cómo puedo comprar el libro?",
-                answer: "Puedes comprar el libro directamente desde nuestra tienda en línea. Ofrecemos envío gratuito en pedidos superiores a $30 y varias opciones de pago seguras."
-              },
-              {
-                question: "¿Hay actividades complementarias disponibles?",
-                answer: "¡Sí! Incluimos actividades interactivas en el libro y ofrecemos recursos adicionales gratuitos en nuestra página web para padres y educadores."
-              },
-              {
-                question: "¿Cómo puedo contactar con la autora?",
-                answer: "Puedes enviar un mensaje a través de nuestro formulario de contacto o seguirnos en nuestras redes sociales donde la autora responde preguntas regularmente."
-              }
-            ].map((faq, index) => (
-              <div key={index} className="border-b border-gray-200 pb-4">
-                <button
-                  onClick={() => toggleSection(`faq-${index}`)}
-                  className="flex justify-between items-center w-full text-left p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-                >
-                  <span className="font-semibold text-blue-800">{faq.question}</span>
-                  {expandedSections[`faq-${index}`] ? (
-                    <ChevronUp className="w-5 h-5 text-blue-600" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-blue-600" />
-                  )}
-                </button>
-                <AnimatePresence>
-                  {expandedSections[`faq-${index}`] && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="p-4 bg-white rounded-b-lg"
-                    >
-                      <p className="text-gray-600">{faq.answer}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-800 mb-4">Contáctanos</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              ¿Tienes preguntas, sugerencias o quieres colaborar con nosotros? Estamos aquí para ayudarte.
-            </p>
-          </div>
-          
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <Mail className="w-8 h-8 text-blue-600 mr-4" />
-                  <h3 className="text-xl font-bold text-blue-800">Correo Electrónico</h3>
-                </div>
-                <p className="text-gray-600">contacto@obesitalasirenita.com</p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <Phone className="w-8 h-8 text-blue-600 mr-4" />
-                  <h3 className="text-xl font-bold text-blue-800">Teléfono</h3>
-                </div>
-                <p className="text-gray-600">+1 (555) 123-4567</p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <MapPin className="w-8 h-8 text-blue-600 mr-4" />
-                  <h3 className="text-xl font-bold text-blue-800">Ubicación</h3>
-                </div>
-                <p className="text-gray-600">Calle del Mar, 123<br />Ciudad Costera, CP 12345</p>
-              </div>
-            </div>
-            
-            <div className="mt-12 bg-white p-8 rounded-xl shadow-lg">
-              <h3 className="text-2xl font-bold text-blue-800 mb-6">Envíanos un mensaje</h3>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-gray-700 mb-2">Nombre Completo</label>
-                    <input 
-                      type="text" 
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Tu nombre"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 mb-2">Email</label>
-                    <input 
-                      type="email" 
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="tu@email.com"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Asunto</label>
-                  <input 
-                    type="text" 
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Asunto del mensaje"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Mensaje</label>
-                  <textarea 
-                    rows="5" 
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Escribe tu mensaje aquí..."
-                  ></textarea>
-                </div>
-                <button 
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors w-full"
-                >
-                  Enviar Mensaje
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
+      <footer className="bg-teal-800 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center">
-                  <Ocean className="w-8 h-8 text-white" />
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                  <Ocean className="w-8 h-8 text-teal-500" />
                 </div>
                 <h3 className="text-2xl font-bold">Obesita la Sirenita</h3>
               </div>
               <p className="text-gray-300 mb-4">
-                Historias submarinas que enseñan valores, promueven la autoestima y fomentan el cuidado del ecosistema marino.
+                Historias que inspiran amor propio y cuidado del mar.
               </p>
               <div className="flex space-x-4">
                 {socialMedia.map((platform, index) => (
@@ -692,17 +445,13 @@ const App = () => {
                 ))}
               </div>
             </div>
-            
             {footerLinks.map((column, index) => (
               <div key={index}>
                 <h4 className="text-xl font-bold mb-4">{column.category}</h4>
                 <ul className="space-y-2">
                   {column.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <a 
-                        href={item.url} 
-                        className="text-gray-300 hover:text-white transition-colors"
-                      >
+                      <a href={item.url} className="text-gray-300 hover:text-white transition-colors">
                         {item.label}
                       </a>
                     </li>
@@ -711,19 +460,10 @@ const App = () => {
               </div>
             ))}
           </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-300 mb-4 md:mb-0">
-                © 2023 Obesita la Sirenita. Todos los derechos reservados.
-              </p>
-              <div className="flex space-x-6">
-                <a href="#terms" className="text-gray-300 hover:text-white">Términos y Condiciones</a>
-                <a href="#privacy" className="text-gray-300 hover:text-white">Política de Privacidad</a>
-                <a href="#cookies" className="text-gray-300 hover:text-white">Política de Cookies</a>
-                <a href="#copyright" className="text-gray-300 hover:text-white">Derechos de Autor</a>
-              </div>
-            </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+            <p className="text-gray-300">
+              © 2025 Obesita la Sirenita. Todos los derechos reservados.
+            </p>
           </div>
         </div>
       </footer>
@@ -739,70 +479,39 @@ const App = () => {
           >
             <div className="bg-white rounded-xl p-8 max-w-md w-full">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold text-blue-800">¡Únete a nuestra comunidad!</h3>
-                <button 
-                  onClick={() => setShowPopup(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <h3 className="text-2xl font-bold text-teal-800">¡Suscríbete!</h3>
+                <button onClick={() => setShowPopup(false)} className="text-gray-500 hover:text-gray-700">
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              
-              <div className="mb-6">
-                <img 
-                  src="https://placehold.co/300x200/3b82f6/ffffff?text=Obesita+la+Sirenita" 
-                  alt="Obesita la Sirenita" 
-                  className="w-full rounded-lg mb-4"
-                />
-                <p className="text-gray-600">
-                  Suscríbete a nuestro canal y recibe actualizaciones sobre nuevos cuentos, actividades especiales y contenido exclusivo para niños y padres.
-                </p>
-              </div>
-              
+              <p className="text-gray-600 mb-6">
+                Recibe noticias sobre nuevos cuentos y actividades para niños.
+              </p>
               <form className="space-y-4">
-                <div>
-                  <label className="block text-gray-700 mb-2">Nombre</label>
-                  <input 
-                    type="text" 
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Tu nombre"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Email</label>
-                  <input 
-                    type="email" 
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-                <div className="flex items-start">
-                  <input 
-                    type="checkbox" 
-                    id="terms" 
-                    className="mt-1 mr-2"
-                  />
-                  <label htmlFor="terms" className="text-sm text-gray-600">
-                    Acepto los términos y condiciones y la política de privacidad.
-                  </label>
-                </div>
+                <input 
+                  type="text" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  placeholder="Tu nombre"
+                />
+                <input 
+                  type="email" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  placeholder="tu@email.com"
+                />
                 <button 
                   type="button"
                   onClick={handleSubscribe}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700"
                 >
                   Suscribirme
                 </button>
               </form>
-              
-              <div className="mt-4 text-center">
-                <button 
-                  onClick={() => setShowPopup(false)}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  No, gracias
-                </button>
-              </div>
+              <button 
+                onClick={() => setShowPopup(false)}
+                className="mt-4 text-teal-600 hover:text-teal-800 w-full text-center"
+              >
+                No, gracias
+              </button>
             </div>
           </motion.div>
         )}
@@ -812,4 +521,3 @@ const App = () => {
 };
 
 export default App;
-```
