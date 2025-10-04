@@ -1,902 +1,550 @@
-```html
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth"> <!-- Habilita el desplazamiento suave en toda la página -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obesita la Sirenita - Cuentos Infantiles con Valores</title>
-    <meta name="description" content="Cuentos infantiles que enseñan valores como el respeto, la diversidad, la amistad, el amor propio y el cuidado del ecosistema marino.">
+    <meta name="description" content="Descubre los cuentos de Obesita la Sirenita. Una aventura submarina que enseña a los niños valores como el respeto, la diversidad, la amistad y el amor propio.">
     
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .comic-font {
-            font-family: 'Comic Neue', cursive;
-        }
+        /* Estilos personalizados para complementar Tailwind */
+        body { font-family: 'Poppins', sans-serif; }
+        .comic-font { font-family: 'Comic Neue', cursive; }
+        
+        /* Efecto de fondo submarino mejorado */
         .underwater-bg {
-            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #0891b2 100%);
+            background: linear-gradient(145deg, #5de0e6 0%, #3b82f6 50%, #1e40af 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        .gradient-text {
-            background: linear-gradient(45deg, #3b82f6, #06b6d4, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .character-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
+
+        /* Título de sección con línea decorativa */
         .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1e40af;
-            text-align: center;
-            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
+            padding-bottom: 0.5rem;
         }
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
+            width: 60%;
             height: 4px;
             background: linear-gradient(90deg, #3b82f6, #06b6d4);
             border-radius: 2px;
         }
+        
+        /* Animación suave para el acordeón de FAQ */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
+<body class="bg-blue-50 text-gray-800 antialiased">
+
+    <!-- =========== Header =========== -->
+    <header id="header" class="bg-white/90 backdrop-blur-lg shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center">
-                        <i class="fas fa-water text-white text-xl"></i>
+                <!-- Logo y Título -->
+                <a href="#home" class="flex items-center space-x-3" aria-label="Inicio de Obesita la Sirenita">
+                    <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                        <i class="fas fa-water text-white text-2xl"></i>
                     </div>
-                    <h1 class="text-2xl font-bold text-blue-800 comic-font">Obesita la Sirenita</h1>
-                </div>
+                    <span class="text-2xl font-bold text-blue-800 comic-font hidden sm:block">Obesita la Sirenita</span>
+                </a>
                 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="#home" class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                        <i class="fas fa-home"></i>
-                        <span>Inicio</span>
-                    </a>
-                    <div class="relative group">
-                        <button class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-book-open"></i>
-                            <span>Cuentos</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <a href="#obesita" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Obesita la Sirenita</a>
-                            <a href="#values" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Valores en Cuentos</a>
-                            <a href="#new" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Nuevos Lanzamientos</a>
-                        </div>
-                    </div>
-                    <div class="relative group">
-                        <button class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-users"></i>
-                            <span>Sobre Nosotros</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <a href="#author" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">La Autora</a>
-                            <a href="#mission" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Nuestra Misión</a>
-                            <a href="#team" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Equipo Creativo</a>
-                        </div>
-                    </div>
-                    <div class="relative group">
-                        <button class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-heart"></i>
-                            <span>Valores</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <a href="#respect" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Respeto</a>
-                            <a href="#diversity" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Diversidad</a>
-                            <a href="#friendship" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Amistad</a>
-                            <a href="#selflove" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Autoestima</a>
-                            <a href="#marine" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Mar y Ecosistema</a>
-                        </div>
-                    </div>
-                    <div class="relative group">
-                        <button class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-shopping-bag"></i>
-                            <span>Tienda</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <a href="#book" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Libro Físico</a>
-                            <a href="#digital" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Versión Digital</a>
-                            <a href="#merch" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Merchandising</a>
-                        </div>
-                    </div>
-                    <a href="#contact" class="nav-item flex items-center space-x-1 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">
-                        <i class="fas fa-envelope"></i>
-                        <span>Contacto</span>
-                    </a>
+                <!-- Navegación de Escritorio -->
+                <nav class="hidden md:flex items-center space-x-2 lg:space-x-4" aria-label="Navegación principal">
+                    <a href="#values" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Valores</a>
+                    <a href="#book" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">El Cuento</a>
+                    <a href="#author" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Autora</a>
+                    <a href="#testimonials" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Opiniones</a>
+                    <a href="#contact" class="bg-blue-600 text-white px-5 py-2 rounded-full font-bold hover:bg-blue-700 transition-transform hover:scale-105 shadow-md">Contacto</a>
                 </nav>
                 
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-700 hover:text-blue-800">
-                    <i class="fas fa-bars text-xl"></i>
+                <!-- Botón de Menú Móvil -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-blue-700" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+                    <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
         
-        <!-- Mobile Navigation -->
-        <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
-            <div class="container mx-auto px-4 py-4 space-y-4">
-                <a href="#home" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">Inicio</a>
-                <div>
-                    <button class="flex justify-between w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors" onclick="toggleMobileSubmenu('cuentos')">
-                        <span>Cuentos</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div id="cuentos-submenu" class="hidden pl-4 pt-2 space-y-2">
-                        <a href="#obesita" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Obesita la Sirenita</a>
-                        <a href="#values" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Valores en Cuentos</a>
-                        <a href="#new" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Nuevos Lanzamientos</a>
-                    </div>
-                </div>
-                <div>
-                    <button class="flex justify-between w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors" onclick="toggleMobileSubmenu('about')">
-                        <span>Sobre Nosotros</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div id="about-submenu" class="hidden pl-4 pt-2 space-y-2">
-                        <a href="#author" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">La Autora</a>
-                        <a href="#mission" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Nuestra Misión</a>
-                        <a href="#team" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Equipo Creativo</a>
-                    </div>
-                </div>
-                <div>
-                    <button class="flex justify-between w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors" onclick="toggleMobileSubmenu('valores')">
-                        <span>Valores</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div id="valores-submenu" class="hidden pl-4 pt-2 space-y-2">
-                        <a href="#respect" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Respeto</a>
-                        <a href="#diversity" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Diversidad</a>
-                        <a href="#friendship" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Amistad</a>
-                        <a href="#selflove" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Autoestima</a>
-                        <a href="#marine" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Mar y Ecosistema</a>
-                    </div>
-                </div>
-                <div>
-                    <button class="flex justify-between w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors" onclick="toggleMobileSubmenu('tienda')">
-                        <span>Tienda</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div id="tienda-submenu" class="hidden pl-4 pt-2 space-y-2">
-                        <a href="#book" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Libro Físico</a>
-                        <a href="#digital" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Versión Digital</a>
-                        <a href="#merch" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 transition-colors">Merchandising</a>
-                    </div>
-                </div>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 transition-colors">Contacto</a>
+        <!-- Navegación Móvil -->
+        <nav id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <a href="#values" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Valores</a>
+                <a href="#book" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">El Cuento</a>
+                <a href="#author" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Autora</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Opiniones</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Contacto</a>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative overflow-hidden underwater-bg text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row items-center gap-12">
-                <div class="lg:w-1/2 space-y-6">
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight comic-font">
-                        ¡Bienvenidos al Mundo Mágico de <span class="text-yellow-300">Obesita la Sirenita</span>!
-                    </h1>
-                    <p class="text-xl">
-                        Una aventura submarina llena de valores, amistad y amor propio que enseñará a tus hijos a aceptarse tal como son y a cuidar nuestro mar.
+    <main>
+        <!-- =========== Hero Section =========== -->
+        <section id="home" class="underwater-bg text-white py-24 sm:py-32">
+            <div class="container mx-auto px-4 z-10 relative text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight comic-font mb-6">
+                    Sumérgete en un Océano de <span class="text-yellow-300">Valores y Aventura</span>
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10">
+                    Descubre una historia mágica que enseña a los más pequeños a quererse, respetar a los demás y cuidar nuestro maravilloso planeta.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="#book" class="bg-white text-blue-800 px-8 py-3 rounded-full font-bold text-lg hover:bg-blue-100 transition-transform hover:scale-105 shadow-2xl">
+                        <i class="fas fa-book-open mr-2"></i>Descubre el Libro
+                    </a>
+                    <button id="trailerBtn" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white/20 transition-transform hover:scale-105">
+                        <i class="fas fa-play-circle mr-2"></i>Ver Trailer
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== Values Section =========== -->
+        <section id="values" class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Valores que Dejan Huella</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+                        Cada página es una semilla de empatía, confianza y amor por el mundo que nos rodea.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <button class="bg-white text-blue-800 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors">
-                            Comprar Ahora
-                        </button>
-                        <button class="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-800 transition-colors">
-                            Ver Trailer
-                        </button>
-                    </div>
-                </div>
-                <div class="lg:w-1/2 relative">
-                    <div class="aspect-video bg-blue-200 rounded-xl overflow-hidden">
-                        <img src="https://placehold.co/800x450/1e40af/ffffff?text=Obesita+la+Sirenita+Trailer" alt="Obesita la Sirenita" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center">
-                        <img src="https://placehold.co/100x100/ff9900/ffffff?text=Caballito+de+Mar" alt="Caballito de Mar" class="w-20 h-20 rounded-full">
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Underwater Decorations -->
-        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-500 to-transparent"></div>
-        <div class="absolute top-10 right-10 w-16 h-16 bg-blue-200 rounded-full opacity-30"></div>
-        <div class="absolute top-20 left-20 w-12 h-12 bg-yellow-200 rounded-full opacity-30"></div>
-    </section>
-
-    <!-- Values Section -->
-    <section id="values" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Los Valores que Enseñamos</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Nuestros cuentos están diseñados para transmitir valores fundamentales que ayudarán a tus hijos a crecer con confianza, empatía y amor por ellos mismos y por el mundo que les rodea.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col items-center text-center">
-                        <i class="fas fa-heart text-pink-500 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Respeto</h3>
-                        <p class="text-gray-600">Enseñamos a los niños a respetar a todos, sin importar sus diferencias, y a respetarse a sí mismos.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col items-center text-center">
-                        <i class="fas fa-water text-blue-500 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Diversidad</h3>
-                        <p class="text-gray-600">Celebramos todas las formas de ser, mostrando que la diversidad enriquece nuestro mundo.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col items-center text-center">
-                        <i class="fas fa-users text-green-500 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Amistad</h3>
-                        <p class="text-gray-600">La verdadera amistad se basa en la lealtad, el compromiso y el apoyo mutuo.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col items-center text-center">
-                        <i class="fas fa-star text-yellow-500 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Autoestima</h3>
-                        <p class="text-gray-600">Creer en uno mismo es el primer paso para alcanzar grandes cosas y ser feliz.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex flex-col items-center text-center">
-                        <i class="fas fa-fish text-teal-500 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Mar y Ecosistema</h3>
-                        <p class="text-gray-600">Conectamos con el mar para aprender a cuidar nuestro ecosistema marino y su biodiversidad.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Obesita la Sirenita Section -->
-    <section id="obesita" class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Obesita la Sirenita</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    El primer cuento de nuestra querida Obesita, donde descubrirá el poder del amor propio, la amistad y la importancia de cuidar nuestro mar.
-                </p>
-            </div>
-            
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <div class="lg:w-1/2">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <img src="https://placehold.co/400x500/3b82f6/ffffff?text=Obesita+la+Sirenita" alt="Obesita la Sirenita" class="w-full rounded-lg mb-6">
-                        <div class="space-y-4">
-                            <h3 class="text-2xl font-bold text-blue-800 comic-font">OBESITA LA SIRENITA</h3>
-                            <p class="text-gray-600">Por Ana Alicia Gutiérrez Rupérez</p>
-                            <p class="text-gray-600">Ilustrado por Angélica Aguiar</p>
-                            <p class="text-gray-600">Publicado por Apuleyo Ediciones</p>
-                            <div class="pt-4">
-                                <p class="text-lg font-semibold text-blue-800 mb-2">Precio: $15.99</p>
-                                <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors w-full">
-                                    Comprar Ahora
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
-                <div class="lg:w-1/2">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h4 class="text-xl font-bold text-blue-800 mb-4">Sinopsis</h4>
-                        <p class="text-gray-600 mb-6">Una historia encantadora sobre una sirenita diferente que descubre el poder del amor propio, la amistad y la importancia de cuidar nuestro mar. Obesita enseña a los niños que ser diferente es maravilloso y que cada uno tiene un valor único.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
+                    <!-- Tarjeta de Valor (se repite) -->
+                    <div class="flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-pink-100 to-pink-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                            <i class="fas fa-heart text-pink-500 text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800">Autoestima</h3>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-purple-100 to-purple-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                           <i class="fas fa-users text-purple-500 text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800">Respeto</h3>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-green-100 to-green-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                           <i class="fas fa-handshake-angle text-green-500 text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800">Amistad</h3>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                           <i class="fas fa-globe-americas text-yellow-500 text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800">Diversidad</h3>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                            <i class="fas fa-leaf text-cyan-500 text-4xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800">Ecología</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== Book Section =========== -->
+        <section id="book" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+            <div class="container mx-auto px-4">
+                 <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">El Cuento que lo Empezó Todo</h2>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
+                    <!-- Reemplazar con la imagen real de la portada -->
+                    <div class="lg:w-2/5">
+                        <img src="https://placehold.co/500x600/3b82f6/ffffff?text=Portada+del+Libro" alt="Portada del libro Obesita la Sirenita" class="w-full rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" loading="lazy">
+                    </div>
+                    
+                    <div class="lg:w-3/5 space-y-6">
+                        <h3 class="text-4xl font-bold text-blue-800 comic-font">Obesita la Sirenita</h3>
+                        <p class="text-lg text-gray-700">Acompaña a Obesita en un emocionante viaje de autodescubrimiento. Aprenderá que la verdadera magia reside en su corazón y que ser diferente es su mayor superpoder. Una historia que te recordará el valor de ser auténtico.</p>
                         
-                        <div class="mb-6">
-                            <h5 class="font-semibold text-blue-800 mb-2">Características:</h5>
-                            <ul class="list-disc list-inside text-gray-600 space-y-1">
-                                <li>Edad recomendada: 4-8 años</li>
-                                <li>48 páginas a todo color</li>
-                                <li>Incluye actividades interactivas</li>
-                                <li>Impreso con tintas ecológicas</li>
+                        <div class="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-500 text-gray-600">
+                            <ul class="space-y-2">
+                                <li><i class="fas fa-check-circle text-blue-500 mr-2"></i><strong>Edad recomendada:</strong> 4-8 años</li>
+                                <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>48 páginas a todo color con ilustraciones preciosas</li>
+                                <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Incluye actividades para fomentar la creatividad</li>
+                                <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Impreso en papel reciclado con tintas ecológicas</li>
                             </ul>
                         </div>
                         
-                        <div class="mt-6">
-                            <h5 class="font-semibold text-blue-800 mb-2">Formatos disponibles:</h5>
-                            <div class="flex flex-wrap gap-3">
-                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Físico</span>
-                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Digital</span>
-                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Audio</span>
+                        <div>
+                            <p class="text-4xl font-bold text-blue-800 mb-4">15.99 €</p>
+                            <!-- Reemplazar con el enlace a la tienda -->
+                            <a href="#" class="w-full text-center bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg inline-block">
+                                <i class="fas fa-shopping-cart mr-3"></i>Comprar Ahora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========== Author Section =========== -->
+        <section id="author" class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                 <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Conoce a la Autora</h2>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-gray-50 p-8 sm:p-12 rounded-2xl shadow-lg">
+                    <!-- Reemplazar con la foto real de la autora -->
+                    <div class="lg:w-2/5">
+                        <img src="https://placehold.co/500x500/818cf8/ffffff?text=Foto+de+Ana" alt="Retrato de Ana Alicia Gutiérrez Rupérez, la autora del libro." class="w-full rounded-full lg:rounded-lg shadow-md aspect-square object-cover" loading="lazy">
+                    </div>
+                    <div class="lg:w-3/5 space-y-5">
+                        <h3 class="text-4xl font-bold text-blue-800">Ana Alicia Gutiérrez Rupérez</h3>
+                        <p class="text-xl text-gray-600 font-light italic">"Mi misión es crear historias que abracen el corazón de los niños, que les susurren que son perfectos tal como son y que les inspiren a ser los guardianes de nuestro planeta."</p>
+                        <p class="text-gray-700">Con más de 15 años de experiencia en educación infantil, Ana combina su pasión por la literatura y el mar para crear cuentos que no solo entretienen, sino que también educan y empoderan.</p>
+                        <div class="flex space-x-5">
+                             <!-- Reemplazar con los enlaces reales a las redes sociales -->
+                            <a href="#" class="text-blue-600 hover:text-blue-800 text-3xl" aria-label="Facebook de la autora"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-pink-600 hover:text-pink-800 text-3xl" aria-label="Instagram de la autora"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-cyan-600 hover:text-cyan-800 text-3xl" aria-label="Twitter de la autora"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =========== Testimonials Section =========== -->
+        <section id="testimonials" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Lo que dicen nuestros lectores</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonio 1 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-quote-left text-blue-200 text-5xl absolute top-4 left-6 opacity-50 -z-1"></i>
+                        <p class="text-gray-600 italic mb-6">"Mis hijos adoran a Obesita. Este cuento ha cambiado nuestra forma de hablar sobre la autoestima y el respeto en casa. ¡Una joya!"</p>
+                        <div class="flex items-center">
+                            <div class="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">M</div>
+                            <div>
+                                <h4 class="font-bold text-blue-800">María González</h4>
+                                <p class="text-sm text-gray-500">Madre de dos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonio 2 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-quote-left text-blue-200 text-5xl absolute top-4 left-6 opacity-50 -z-1"></i>
+                        <p class="text-gray-600 italic mb-6">"Utilizo este cuento en mi clase para enseñar valores. Los niños se identifican con Obesita y aprenden lecciones sobre amistad y ecología de una forma divertida."</p>
+                         <div class="flex items-center">
+                            <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">C</div>
+                            <div>
+                                <h4 class="font-bold text-blue-800">Carlos Martínez</h4>
+                                <p class="text-sm text-gray-500">Maestro de Primaria</p>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Testimonio 3 -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                        <i class="fas fa-quote-left text-blue-200 text-5xl absolute top-4 left-6 opacity-50 -z-1"></i>
+                        <p class="text-gray-600 italic mb-6">"La historia de Obesita es perfecta para trabajar la diversidad. Los niños quedan fascinados con el mundo submarino y sus personajes."</p>
+                         <div class="flex items-center">
+                            <div class="w-14 h-14 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">L</div>
+                            <div>
+                                <h4 class="font-bold text-blue-800">Lucía Pérez</h4>
+                                <p class="text-sm text-gray-500">Educadora infantil</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Author Section -->
-    <section id="author" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">La Autora</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Conoce a la creadora detrás de las maravillosas historias de Obesita la Sirenita.
-                </p>
-            </div>
-            
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <div class="lg:w-1/2">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <img src="https://placehold.co/400x500/3b82f6/ffffff?text=Ana+Alicia+Gutiérrez+Rupérez" alt="Ana Alicia Gutiérrez Rupérez" class="w-full rounded-lg mb-6">
-                        <h3 class="text-2xl font-bold text-blue-800 mb-4">Ana Alicia Gutiérrez Rupérez</h3>
-                        <p class="text-gray-600 mb-4">
-                            Escritora de cuentos infantiles con más de 15 años de experiencia en educación y desarrollo infantil. Su pasión por la literatura y el cuidado del medio ambiente se refleja en cada una de sus historias.
-                        </p>
-                        <p class="text-gray-600 mb-4">
-                            "Mi objetivo es crear historias que inspiren a los niños a ser quienes son, a amarse a sí mismos y a cuidar nuestro hermoso planeta."
-                        </p>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-twitter"></i></a>
+        <!-- =========== FAQ Section =========== -->
+        <section id="faq" class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Preguntas Frecuentes</h2>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <!-- FAQ Item (se repite) -->
+                    <div>
+                        <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <span class="font-semibold text-lg text-blue-900">¿Para qué edad está recomendado el cuento?</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p class="text-gray-600 p-5">El cuento está diseñado para niños de <strong>4 a 8 años</strong>. Es ideal para leer en voz alta a los más pequeños y para que los que empiezan a leer lo disfruten por sí mismos.</p>
+                        </div>
+                    </div>
+                     <div>
+                        <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <span class="font-semibold text-lg text-blue-900">¿Qué valores principales se trabajan en la historia?</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p class="text-gray-600 p-5">La historia se centra en la <strong>autoestima</strong>, el <strong>respeto a la diversidad</strong>, la <strong>amistad verdadera</strong> y la importancia de <strong>cuidar el ecosistema marino</strong>.</p>
+                        </div>
+                    </div>
+                     <div>
+                        <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors">
+                            <span class="font-semibold text-lg text-blue-900">¿Realizáis envíos internacionales?</span>
+                            <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p class="text-gray-600 p-5">¡Sí! Realizamos envíos a todo el mundo. Los costes y tiempos de entrega varían según el destino. Puedes calcular el coste exacto en la página de pago.</p>
                         </div>
                     </div>
                 </div>
-                
-                <div class="lg:w-1/2">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h4 class="text-xl font-bold text-blue-800 mb-4">Su Historia</h4>
-                        <p class="text-gray-600 mb-4">
-                            Ana Alicia comenzó a escribir cuentos cuando era niña, inspirada por su amor por el mar y su deseo de compartir valores importantes con otros niños. Su primera historia, "Obesita la Sirenita", fue escrita durante un viaje a la costa, donde observó la belleza del océano y la necesidad de protegerlo.
-                        </p>
-                        <p class="text-gray-600 mb-4">
-                            Como madre de tres hijos, comprendió la importancia de contar historias que no solo entretuvieran, sino que también enseñaran valores fundamentales como el respeto, la diversidad y el amor propio.
-                        </p>
-                        <p class="text-gray-600 mb-4">
-                            Hoy en día, sus libros han sido traducidos a más de 10 idiomas y se utilizan en escuelas de todo el mundo para enseñar valores a través de la literatura infantil.
-                        </p>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Mission Section -->
-    <section id="mission" class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Nuestra Misión</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Crear historias que inspiren a los niños a ser quienes son, a amarse a sí mismos y a cuidar nuestro hermoso planeta.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-blue-800 mb-4">Nuestro Propósito</h3>
-                    <p class="text-gray-600 mb-4">
-                        En Obesita la Sirenita, creemos que cada niño merece sentirse especial y valorado. Nuestra misión es crear historias que celebren la diversidad, fomenten la autoestima y enseñen valores fundamentales a través de aventuras emocionantes y personajes inolvidables.
-                    </p>
-                    <p class="text-gray-600 mb-4">
-                        Queremos que cada niño que lea nuestras historias se sienta inspirado a ser quien realmente es, a amarse a sí mismo y a cuidar de nuestro mundo marino y terrestre.
+        <!-- =========== Contact Section =========== -->
+        <section id="contact" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">¡Hablemos!</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
+                        ¿Tienes preguntas, ideas o simplemente quieres saludar? ¡Nos encantará saber de ti!
                     </p>
                 </div>
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-blue-800 mb-4">Cómo Lo Hacemos</h3>
-                    <ul class="list-disc list-inside text-gray-600 space-y-2">
-                        <li>Creando personajes diversos y representativos</li>
-                        <li>Incorporando valores positivos en cada historia</li>
-                        <li>Colaborando con ilustradores talentosos</li>
-                        <li>Ofreciendo recursos educativos para padres y maestros</li>
-                        <li>Donando parte de nuestras ganancias a organizaciones de conservación marina</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="mt-12 text-center">
-                <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors">
-                    Únete a Nuestra Misión
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section id="team" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Equipo Creativo</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Conoce al equipo talentoso detrás de las historias de Obesita la Sirenita.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="card-hover bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex flex-col items-center text-center">
-                        <img src="https://placehold.co/150x150/3b82f6/ffffff?text=Angélica+Aguiar" alt="Angélica Aguiar" class="w-24 h-24 rounded-full mb-4">
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Angélica Aguiar</h3>
-                        <p class="text-gray-600 mb-2">Ilustradora Principal</p>
-                        <p class="text-gray-600">Creadora de los hermosos mundos visuales que acompañan nuestras historias.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex flex-col items-center text-center">
-                        <img src="https://placehold.co/150x150/06b6d4/ffffff?text=Carlos+Martínez" alt="Carlos Martínez" class="w-24 h-24 rounded-full mb-4">
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Carlos Martínez</h3>
-                        <p class="text-gray-600 mb-2">Editor Creativo</p>
-                        <p class="text-gray-600">Garante de la calidad narrativa y coherencia de nuestras historias.</p>
-                    </div>
-                </div>
-                <div class="card-hover bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex flex-col items-center text-center">
-                        <img src="https://placehold.co/150x150/10b981/ffffff?text=Luisa+González" alt="Luisa González" class="w-24 h-24 rounded-full mb-4">
-                        <h3 class="text-xl font-bold text-blue-800 mb-2">Luisa González</h3>
-                        <p class="text-gray-600 mb-2">Especialista en Educación</p>
-                        <p class="text-gray-600">Asegura que nuestras historias sean adecuadas y beneficiosas para el desarrollo infantil.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Lo que dicen nuestros lectores</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Padres, educadores y niños comparten sus experiencias con nuestras historias llenas de valores y magia submarina.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                            M
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="font-bold text-blue-800">María González</h4>
-                            <p class="text-sm text-gray-600">Madre de dos niños</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Mis hijos adoran a Obesita y han aprendido a aceptarse tal como son. Este cuento ha cambiado nuestra forma de hablar sobre la autoestima en casa."</p>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                            C
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="font-bold text-blue-800">Carlos Martínez</h4>
-                            <p class="text-sm text-gray-600">Maestro de primaria</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Utilizo este cuento en mi clase para enseñar valores. Los niños se identifican con Obesita y aprenden importantes lecciones sobre amistad y respeto."</p>
-                </div>
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                            L
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="font-bold text-blue-800">Lucía Pérez</h4>
-                            <p class="text-sm text-gray-600">Educadora infantil</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"La historia de Obesita es perfecta para trabajar la diversidad y el cuidado del medio ambiente. Los niños quedan fascinados con el mundo submarino."</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Social Media Section -->
-    <section class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Síguenos en redes sociales</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Únete a nuestra comunidad y descubre más contenido, actividades y novedades sobre Obesita la Sirenita y sus amigos submarinos.
-                </p>
-            </div>
-            
-            <div class="flex justify-center space-x-6">
-                <a href="#" class="p-4 rounded-full bg-blue-600 text-white hover:scale-110 transition-transform">
-                    <i class="fab fa-facebook-f text-xl"></i>
-                </a>
-                <a href="#" class="p-4 rounded-full bg-pink-600 text-white hover:scale-110 transition-transform">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-                <a href="#" class="p-4 rounded-full bg-red-600 text-white hover:scale-110 transition-transform">
-                    <i class="fab fa-youtube text-xl"></i>
-                </a>
-                <a href="#" class="p-4 rounded-full bg-black text-white hover:scale-110 transition-transform">
-                    <i class="fab fa-tiktok text-xl"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Preguntas Frecuentes</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Aquí encontrarás respuestas a las preguntas más comunes sobre nuestros cuentos y valores.
-                </p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto space-y-4">
-                <div class="border-b border-gray-200 pb-4">
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                        <span class="font-semibold text-blue-800">¿Para qué edad está recomendado el cuento de Obesita la Sirenita?</span>
-                        <i class="fas fa-chevron-down text-blue-600"></i>
-                    </button>
-                    <div class="faq-content p-4 bg-white rounded-b-lg hidden">
-                        <p class="text-gray-600">El cuento está diseñado para niños entre 4 y 8 años, aunque puede leerse en voz alta a niños más pequeños. Las ilustraciones y el lenguaje simple hacen que sea accesible para esta edad.</p>
-                    </div>
-                </div>
-                <div class="border-b border-gray-200 pb-4">
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                        <span class="font-semibold text-blue-800">¿Cómo puedo comprar el libro?</span>
-                        <i class="fas fa-chevron-down text-blue-600"></i>
-                    </button>
-                    <div class="faq-content p-4 bg-white rounded-b-lg hidden">
-                        <p class="text-gray-600">Puedes comprar el libro directamente desde nuestra tienda en línea. Ofrecemos envío gratuito en pedidos superiores a $30 y varias opciones de pago seguras.</p>
-                    </div>
-                </div>
-                <div class="border-b border-gray-200 pb-4">
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                        <span class="font-semibold text-blue-800">¿Hay actividades complementarias disponibles?</span>
-                        <i class="fas fa-chevron-down text-blue-600"></i>
-                    </button>
-                    <div class="faq-content p-4 bg-white rounded-b-lg hidden">
-                        <p class="text-gray-600">¡Sí! Incluimos actividades interactivas en el libro y ofrecemos recursos adicionales gratuitos en nuestra página web para padres y educadores.</p>
-                    </div>
-                </div>
-                <div class="border-b border-gray-200 pb-4">
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                        <span class="font-semibold text-blue-800">¿Cómo puedo contactar con la autora?</span>
-                        <i class="fas fa-chevron-down text-blue-600"></i>
-                    </button>
-                    <div class="faq-content p-4 bg-white rounded-b-lg hidden">
-                        <p class="text-gray-600">Puedes enviar un mensaje a través de nuestro formulario de contacto o seguirnos en nuestras redes sociales donde la autora responde preguntas regularmente.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="section-title">Contáctanos</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    ¿Tienes preguntas, sugerencias o quieres colaborar con nosotros? Estamos aquí para ayudarte.
-                </p>
-            </div>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-envelope text-blue-600 text-2xl mr-4"></i>
-                            <h3 class="text-xl font-bold text-blue-800">Correo Electrónico</h3>
-                        </div>
-                        <p class="text-gray-600">contacto@obesitalasirenita.com</p>
-                    </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-phone text-blue-600 text-2xl mr-4"></i>
-                            <h3 class="text-xl font-bold text-blue-800">Teléfono</h3>
-                        </div>
-                        <p class="text-gray-600">+1 (555) 123-4567</p>
-                    </div>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-map-marker-alt text-blue-600 text-2xl mr-4"></i>
-                            <h3 class="text-xl font-bold text-blue-800">Ubicación</h3>
-                        </div>
-                        <p class="text-gray-600">Calle del Mar, 123<br>Ciudad Costera, CP 12345</p>
-                    </div>
-                </div>
-                
-                <div class="mt-12 bg-white p-8 rounded-xl shadow-lg">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-6 comic-font">Envíanos un mensaje</h3>
-                    <form class="space-y-6">
+                <div class="max-w-2xl mx-auto bg-white p-8 sm:p-10 rounded-2xl shadow-2xl">
+                    <!-- IMPORTANTE: Reemplaza 'TU_ID_UNICO' con tu ID de Formspree.io -->
+                    <form id="contactForm" action="https://formspree.io/f/TU_ID_UNICO" method="POST" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-gray-700 mb-2">Nombre Completo</label>
-                                <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Tu nombre">
+                                <label for="name" class="block text-gray-700 font-semibold mb-2">Nombre</label>
+                                <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Tu nombre" required>
                             </div>
                             <div>
-                                <label class="block text-gray-700 mb-2">Email</label>
-                                <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="tu@email.com">
+                                <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                                <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="tu@email.com" required>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-2">Asunto</label>
-                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Asunto del mensaje">
+                            <label for="message" class="block text-gray-700 font-semibold mb-2">Mensaje</label>
+                            <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Escribe tu mensaje aquí..." required></textarea>
                         </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">Mensaje</label>
-                            <textarea rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Escribe tu mensaje aquí..."></textarea>
-                        </div>
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors w-full">
+                        <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-full font-bold text-lg hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg">
                             Enviar Mensaje
                         </button>
                     </form>
+                    <p id="formStatus" class="mt-4 text-center"></p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center">
-                            <i class="fas fa-water text-white text-xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold comic-font">Obesita la Sirenita</h3>
-                    </div>
-                    <p class="text-gray-300 mb-4">
-                        Historias submarinas que enseñan valores, promueven la autoestima y fomentan el cuidado del ecosistema marino.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="p-2 rounded-full bg-blue-600 text-white hover:scale-110 transition-transform">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="p-2 rounded-full bg-pink-600 text-white hover:scale-110 transition-transform">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="p-2 rounded-full bg-red-600 text-white hover:scale-110 transition-transform">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="#" class="p-2 rounded-full bg-black text-white hover:scale-110 transition-transform">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
+    <!-- =========== Footer =========== -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 text-center">
+             <a href="#home" class="inline-block mb-6" aria-label="Volver al inicio">
+                <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
+                    <i class="fas fa-water text-white text-3xl"></i>
                 </div>
-                
-                <div>
-                    <h4 class="text-xl font-bold mb-4">Información</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors">Sobre Nosotros</a></li>
-                        <li><a href="#mission" class="text-gray-300 hover:text-white transition-colors">Nuestra Misión</a></li>
-                        <li><a href="#team" class="text-gray-300 hover:text-white transition-colors">Equipo</a></li>
-                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contacto</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-xl font-bold mb-4">Políticas</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#terms" class="text-gray-300 hover:text-white transition-colors">Términos y Condiciones</a></li>
-                        <li><a href="#privacy" class="text-gray-300 hover:text-white transition-colors">Política de Privacidad</a></li>
-                        <li><a href="#cookies" class="text-gray-300 hover:text-white transition-colors">Política de Cookies</a></li>
-                        <li><a href="#copyright" class="text-gray-300 hover:text-white transition-colors">Derechos de Autor</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-xl font-bold mb-4">Soporte</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#faq" class="text-gray-300 hover:text-white transition-colors">Preguntas Frecuentes</a></li>
-                        <li><a href="#shipping" class="text-gray-300 hover:text-white transition-colors">Envíos y Devoluciones</a></li>
-                        <li><a href="#tracking" class="text-gray-300 hover:text-white transition-colors">Seguimiento de Pedidos</a></li>
-                        <li><a href="#support" class="text-gray-300 hover:text-white transition-colors">Atención al Cliente</a></li>
-                    </ul>
-                </div>
+            </a>
+            <h3 class="text-3xl font-bold comic-font mb-4">Obesita la Sirenita</h3>
+            <p class="text-gray-400 max-w-xl mx-auto mb-8">
+                Creando historias que inspiran a los niños a amarse a sí mismos y a cuidar nuestro planeta.
+            </p>
+            <div class="flex justify-center space-x-6 mb-10">
+                <!-- Reemplazar con enlaces reales -->
+                <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="YouTube"><i class="fab fa-youtube text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok text-2xl"></i></a>
             </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-300 mb-4 md:mb-0">
-                        © 2023 Obesita la Sirenita. Todos los derechos reservados.
-                    </p>
-                    <div class="flex space-x-6">
-                        <a href="#terms" class="text-gray-300 hover:text-white">Términos y Condiciones</a>
-                        <a href="#privacy" class="text-gray-300 hover:text-white">Política de Privacidad</a>
-                        <a href="#cookies" class="text-gray-300 hover:text-white">Política de Cookies</a>
-                        <a href="#copyright" class="text-gray-300 hover:text-white">Derechos de Autor</a>
-                    </div>
-                </div>
-            </div>
+            <p class="text-gray-500 text-sm">
+                &copy; <span id="year"></span> Obesita la Sirenita. Todos los derechos reservados.
+            </p>
         </div>
     </footer>
-
-    <!-- Subscription Popup -->
-    <div id="subscriptionPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full">
-            <div class="flex justify-between items-start mb-4">
-                <h3 class="text-2xl font-bold text-blue-800 comic-font">¡Únete a nuestra comunidad!</h3>
-                <button id="closePopup" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="mb-6">
-                <img src="https://placehold.co/300x200/3b82f6/ffffff?text=Obesita+la+Sirenita" alt="Obesita la Sirenita" class="w-full rounded-lg mb-4">
-                <p class="text-gray-600">
-                    Suscríbete a nuestro canal y recibe actualizaciones sobre nuevos cuentos, actividades especiales y contenido exclusivo para niños y padres.
-                </p>
-            </div>
-            
-            <form class="space-y-4">
-                <div>
-                    <label class="block text-gray-700 mb-2">Nombre</label>
-                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Tu nombre">
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">Email</label>
-                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="tu@email.com">
-                </div>
-                <div class="flex items-start">
-                    <input type="checkbox" id="terms" class="mt-1 mr-2">
-                    <label for="terms" class="text-sm text-gray-600">
-                        Acepto los términos y condiciones y la política de privacidad.
-                    </label>
-                </div>
-                <button type="button" id="subscribeBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Suscribirme
-                </button>
-            </form>
-            
-            <div class="mt-4 text-center">
-                <button id="noThanksBtn" class="text-blue-600 hover:text-blue-800">
-                    No, gracias
-                </button>
+    
+    <!-- =========== Modals (Pop-ups) =========== -->
+    <!-- Modal del Trailer -->
+    <div id="trailerModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden" aria-modal="true" role="dialog">
+        <div class="bg-white rounded-lg w-full max-w-3xl relative">
+            <button id="closeTrailerModal" class="absolute -top-4 -right-4 w-10 h-10 bg-white text-black rounded-full text-2xl" aria-label="Cerrar vídeo">&times;</button>
+            <div class="aspect-w-16 aspect-h-9">
+                 <!-- Reemplazar con el ID de tu vídeo de YouTube -->
+                <iframe id="youtube-player" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </div>
-
+    
+    <!-- Modal de Suscripción -->
+    <div id="subscriptionModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 opacity-0 invisible transition-opacity duration-500">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full relative transform scale-95 transition-transform duration-500">
+            <button id="closeSubscriptionModal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800" aria-label="Cerrar suscripción">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-blue-800 comic-font mb-2">¡Únete a la Aventura!</h3>
+                <p class="text-gray-600 mb-6">Suscríbete para recibir noticias, actividades gratuitas y ofertas especiales.</p>
+                <form id="subscriptionForm" action="https://formspree.io/f/TU_ID_UNICO_SUSCRIPCION" method="POST" class="space-y-4">
+                    <div>
+                        <label for="popup-email" class="sr-only">Email</label>
+                        <input type="email" id="popup-email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="tu@email.com" required>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full font-bold hover:bg-blue-700 transition-transform hover:scale-105">
+                        ¡Suscribirme!
+                    </button>
+                </form>
+                 <p id="subscriptionStatus" class="mt-4 text-center"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- =========== JavaScript =========== -->
     <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Lógica del Header que se encoge con el scroll ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('py-2', 'shadow-xl');
+                header.classList.remove('py-3');
+            } else {
+                header.classList.remove('py-2', 'shadow-xl');
+                header.classList.add('py-3');
+            }
         });
 
-        // Mobile Submenu Toggle
-        function toggleMobileSubmenu(menuId) {
-            const submenu = document.getElementById(menuId + '-submenu');
-            submenu.classList.toggle('hidden');
-        }
+        // --- Lógica del Menú Móvil ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileNavLinks = mobileMenu.querySelectorAll('a');
 
-        // FAQ Toggle
-        document.querySelectorAll('.faq-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const content = this.nextElementSibling;
-                const icon = this.querySelector('i');
+        const toggleMenu = () => {
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', !isHidden);
+        };
+        
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', () => {
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMenu();
+            }
+        }));
+        
+        // --- Lógica del Acordeón de FAQ ---
+        const faqBtns = document.querySelectorAll('.faq-btn');
+        faqBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
                 
-                content.classList.toggle('hidden');
-                if (content.classList.contains('hidden')) {
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
+                // Cierra otros acordeones abiertos
+                faqBtns.forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.nextElementSibling.style.maxHeight = null;
+                        otherButton.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+
+                // Abre o cierra el actual
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.classList.remove('rotate-180');
                 } else {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.classList.add('rotate-180');
                 }
             });
         });
 
-        // Subscription Popup
-        let popupTimer;
-        function showPopup() {
-            document.getElementById('subscriptionPopup').classList.remove('hidden');
+        // --- Lógica de Modals (Pop-ups) ---
+        // Trailer Modal
+        const trailerModal = document.getElementById('trailerModal');
+        const trailerBtn = document.getElementById('trailerBtn');
+        const closeTrailerModal = document.getElementById('closeTrailerModal');
+        const youtubePlayer = document.getElementById('youtube-player');
+        const videoSrc = youtubePlayer.src;
+
+        trailerBtn.addEventListener('click', () => trailerModal.classList.remove('hidden'));
+        const stopVideo = () => {
+            trailerModal.classList.add('hidden');
+            youtubePlayer.src = videoSrc; // Detiene la reproducción al cerrar
+        };
+        closeTrailerModal.addEventListener('click', stopVideo);
+        trailerModal.addEventListener('click', (e) => {
+            if (e.target === trailerModal) stopVideo(); // Cierra si se hace clic fuera
+        });
+
+        // Subscription Modal
+        const subscriptionModal = document.getElementById('subscriptionModal');
+        const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
+        
+        const showSubscriptionModal = () => {
+            if (sessionStorage.getItem('subscribed')) return;
+            subscriptionModal.classList.remove('invisible', 'opacity-0');
+            subscriptionModal.querySelector('div').classList.remove('scale-95');
+        };
+        const hideSubscriptionModal = () => {
+            subscriptionModal.classList.add('opacity-0');
+            subscriptionModal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => subscriptionModal.classList.add('invisible'), 500);
+        };
+
+        setTimeout(showSubscriptionModal, 10000); // Aparece después de 10 segundos
+        closeSubscriptionModal.addEventListener('click', hideSubscriptionModal);
+        
+        // --- Lógica para el envío de Formularios (con Formspree) ---
+        async function handleFormSubmit(event, form, statusElement) {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    statusElement.textContent = "¡Gracias por tu mensaje!";
+                    statusElement.className = 'mt-4 text-center text-green-600 font-semibold';
+                    form.reset();
+                    if(form.id === 'subscriptionForm') {
+                         sessionStorage.setItem('subscribed', 'true');
+                         setTimeout(hideSubscriptionModal, 2000);
+                    }
+                } else {
+                    const responseData = await response.json();
+                    statusElement.textContent = responseData.errors.map(error => error.message).join(", ");
+                    statusElement.className = 'mt-4 text-center text-red-600 font-semibold';
+                }
+            } catch (error) {
+                statusElement.textContent = "Oops! Hubo un problema al enviar el formulario.";
+                statusElement.className = 'mt-4 text-center text-red-600 font-semibold';
+            }
         }
 
-        function hidePopup() {
-            document.getElementById('subscriptionPopup').classList.add('hidden');
-            clearTimeout(popupTimer);
-        }
+        const contactForm = document.getElementById('contactForm');
+        const contactStatus = document.getElementById('formStatus');
+        contactForm.addEventListener('submit', (e) => handleFormSubmit(e, contactForm, contactStatus));
 
-        // Show popup after 5 seconds
-        popupTimer = setTimeout(showPopup, 5000);
+        const subscriptionForm = document.getElementById('subscriptionForm');
+        const subscriptionStatus = document.getElementById('subscriptionStatus');
+        subscriptionForm.addEventListener('submit', (e) => handleFormSubmit(e, subscriptionForm, subscriptionStatus));
 
-        // Popup close buttons
-        document.getElementById('closePopup').addEventListener('click', hidePopup);
-        document.getElementById('noThanksBtn').addEventListener('click', hidePopup);
-        document.getElementById('subscribeBtn').addEventListener('click', function() {
-            alert('¡Gracias por suscribirte! Recibirás actualizaciones sobre nuevos cuentos y actividades especiales.');
-            hidePopup();
-        });
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                
-                // Close mobile menu if open
-                if (!document.getElementById('mobileMenu').classList.contains('hidden')) {
-                    document.getElementById('mobileMenu').classList.add('hidden');
-                }
-            });
-        });
-
-        // Add active state to navigation items
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navItems = document.querySelectorAll('.nav-item');
-            
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.clientHeight;
-                
-                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-            
-            navItems.forEach(item => {
-                item.classList.remove('bg-blue-100', 'text-blue-800');
-                if (item.getAttribute('href') === `#${currentSection}`) {
-                    item.classList.add('bg-blue-100', 'text-blue-800');
-                }
-            });
-        });
+        // --- Actualizar año en el footer ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+    });
     </script>
 </body>
 </html>
-```
