@@ -108,3 +108,44 @@ body {
     background: #3b82f6; /* Azul de tu tema */
 }
 
+/* style.css (o dentro de <style>) */
+
+/* Estilo para el cargador/spinner */
+.loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3b82f6; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Clases para animar el resultado del cuento */
+.story-result-show {
+    opacity: 1 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Fuente personalizada, ya la tienes en el HTML, pero asegúrate de que esté definida */
+.comic-font {
+    font-family: 'Comic Neue', cursive;
+}
+
+/* Fondo de la sección Hero */
+.underwater-bg {
+    /* Puedes usar una imagen real de fondo en lugar de un placeholder de color */
+    background-image: linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.7)), url('https://placehold.co/1920x800/1e3a8a/ffffff?text=Fondo+Submarino');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.text-shadow-strong {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
