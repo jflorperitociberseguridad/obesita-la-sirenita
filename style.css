@@ -149,3 +149,20 @@ body {
 .text-shadow-strong {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+/* style.css (o dentro de <style>) */
+
+.faq-content {
+    /* Clave para ocultar el contenido y permitir la transición con max-height en JS */
+    max-height: 0; 
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.faq-content p {
+    padding-top: 1rem; /* Añade espacio para que se vea bien cuando se despliegue */
+}
+
+.faq-btn i {
+    /* Transición para el icono de flecha */
+    transition: transform 0.3s;
+}
