@@ -1,0 +1,44 @@
+/* Estilos personalizados para complementar Tailwind */
+body { 
+    font-family: 'Poppins', sans-serif; 
+}
+
+.comic-font { 
+    font-family: 'Comic Neue', cursive; 
+}
+
+.underwater-bg {
+    background: linear-gradient(145deg, #5de0e6 0%, #3b82f6 50%, #1e40af 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    border-radius: 2px;
+}
+
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Estilo para el enlace activo en la navegación */
+.active-link {
+    color: #1d4ed8 !important; /* !important para asegurar la prioridad */
+    background-color: #eff6ff !important;
+}
