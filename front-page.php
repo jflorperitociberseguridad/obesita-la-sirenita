@@ -73,7 +73,7 @@
             </div>
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
                 <div class="lg:w-2/5">
-                    <img src="https://placehold.co/500x600/3b82f6/ffffff?text=Portada+del+Libro" alt="Portada del libro Obesita la Sirenita" class="w-full rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portada-libro.jpg" alt="Portada del libro Obesita la Sirenita" class="w-full rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" loading="lazy">
                 </div>
                 
                 <div class="lg:w-3/5 space-y-6">
@@ -178,7 +178,7 @@
             </div>
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
                 <div class="lg:w-2/5">
-                    <img src="https://placehold.co/500x500/818cf8/ffffff?text=Foto+de+Ana" alt="Retrato de Ana Alicia Gutiérrez Rupérez, la autora del libro." class="w-full rounded-full lg:rounded-lg shadow-md aspect-square object-cover" loading="lazy">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/foto-ana.jpg" alt="Retrato de Ana Alicia Gutiérrez Rupérez, la autora del libro." class="w-full rounded-full lg:rounded-lg shadow-md aspect-square object-cover" loading="lazy">
                 </div>
                 <div class="lg:w-3/5 space-y-5">
                     <h3 class="text-4xl font-bold text-blue-800">Ana Alicia Gutiérrez Rupérez</h3>
@@ -205,19 +205,19 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-5xl mx-auto">
                 <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
-                    <img src="https://placehold.co/150x150/3b82f6/ffffff?text=Angélica" alt="Angélica Aguiar" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/angelica.jpg" alt="Angélica Aguiar" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Angélica Aguiar</h3>
                     <p class="font-semibold text-blue-500 mb-3">Ilustradora Principal</p>
                     <p class="text-gray-600">Creadora de los hermosos mundos visuales que acompañan nuestras historias.</p>
                 </div>
                 <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
-                    <img src="https://placehold.co/150x150/06b6d4/ffffff?text=Carlos" alt="Carlos Martínez" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/carlos.jpg" alt="Carlos Martínez" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Carlos Martínez</h3>
                     <p class="font-semibold text-blue-500 mb-3">Editor Creativo</p>
                     <p class="text-gray-600">Garante de la calidad narrativa y coherencia de nuestras historias.</p>
                 </div>
                 <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
-                    <img src="https://placehold.co/150x150/10b981/ffffff?text=Luisa" alt="Luisa González" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/luisa.jpg" alt="Luisa González" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Luisa González</h3>
                     <p class="font-semibold text-blue-500 mb-3">Especialista en Educación</p>
                     <p class="text-gray-600">Asegura que las historias sean adecuadas para el desarrollo infantil.</p>
@@ -373,222 +373,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- NOTA: El JavaScript se debe mover a un archivo main.js y encolarse en functions.php -->
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const header = document.getElementById('header');
-        if (header) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('py-2', 'shadow-xl');
-                    header.classList.remove('py-3');
-                } else {
-                    header.classList.remove('py-2', 'shadow-xl');
-                    header.classList.add('py-3');
-                }
-            });
-        }
-
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        if (mobileMenuBtn && mobileMenu) {
-            const mobileNavLinks = mobileMenu.querySelectorAll('a.nav-link');
-            const toggleMenu = () => {
-                const isHidden = mobileMenu.classList.toggle('hidden');
-                mobileMenuBtn.setAttribute('aria-expanded', !isHidden);
-            };
-            mobileMenuBtn.addEventListener('click', toggleMenu);
-            mobileNavLinks.forEach(link => link.addEventListener('click', () => {
-                if (!mobileMenu.classList.contains('hidden')) toggleMenu();
-            }));
-        }
-
-        const faqBtns = document.querySelectorAll('.faq-btn');
-        faqBtns.forEach(button => {
-            button.addEventListener('click', () => {
-                const content = button.nextElementSibling;
-                const icon = button.querySelector('i');
-                const isExpanded = content.style.maxHeight;
-                faqBtns.forEach(otherButton => {
-                    if (otherButton !== button) {
-                        otherButton.nextElementSibling.style.maxHeight = null;
-                        otherButton.querySelector('i').classList.remove('rotate-180');
-                    }
-                });
-                if (isExpanded) {
-                    content.style.maxHeight = null;
-                    icon.classList.remove('rotate-180');
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    icon.classList.add('rotate-180');
-                }
-            });
-        });
-
-        const trailerModal = document.getElementById('trailerModal');
-        const trailerBtn = document.getElementById('trailerBtn');
-        const closeTrailerModal = document.getElementById('closeTrailerModal');
-        const youtubePlayer = document.getElementById('youtube-player');
-        if (trailerBtn && trailerModal && closeTrailerModal && youtubePlayer) {
-            trailerBtn.addEventListener('click', () => trailerModal.classList.remove('hidden'));
-            const stopVideo = () => {
-                trailerModal.classList.add('hidden');
-                youtubePlayer.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
-            };
-            closeTrailerModal.addEventListener('click', stopVideo);
-            trailerModal.addEventListener('click', (e) => {
-                if (e.target === trailerModal) stopVideo();
-            });
-        }
-
-        const subscriptionModal = document.getElementById('subscriptionModal');
-        const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
-        if (subscriptionModal && closeSubscriptionModal) {
-            const showSubscriptionModal = () => {
-                if (sessionStorage.getItem('subscribed')) return;
-                subscriptionModal.classList.remove('invisible', 'opacity-0');
-                subscriptionModal.querySelector('div').classList.remove('scale-95');
-            };
-            const hideSubscriptionModal = () => {
-                subscriptionModal.classList.add('opacity-0');
-                subscriptionModal.querySelector('div').classList.add('scale-95');
-                setTimeout(() => subscriptionModal.classList.add('invisible'), 500);
-            };
-            setTimeout(showSubscriptionModal, 10000);
-            closeSubscriptionModal.addEventListener('click', hideSubscriptionModal);
-        }
-
-        async function handleFormSubmit(event, form, statusElement) {
-            event.preventDefault();
-            const data = new FormData(event.target);
-            try {
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                });
-                if (response.ok) {
-                    statusElement.textContent = "¡Gracias por tu mensaje!";
-                    statusElement.className = 'mt-4 text-center text-green-600 font-semibold';
-                    form.reset();
-                    if(form.id === 'subscriptionForm') {
-                         sessionStorage.setItem('subscribed', 'true');
-                         setTimeout(hideSubscriptionModal, 2000);
-                    }
-                } else {
-                    const responseData = await response.json();
-                    statusElement.textContent = responseData.errors.map(error => error.message).join(", ");
-                    statusElement.className = 'mt-4 text-center text-red-600 font-semibold';
-                }
-            } catch (error) {
-                statusElement.textContent = "Oops! Hubo un problema al enviar el formulario.";
-                statusElement.className = 'mt-4 text-center text-red-600 font-semibold';
-            }
-        }
-
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            const contactStatus = document.getElementById('formStatus');
-            contactForm.addEventListener('submit', (e) => handleFormSubmit(e, contactForm, contactStatus));
-        }
-
-        const subscriptionForm = document.getElementById('subscriptionForm');
-        if (subscriptionForm) {
-            const subscriptionStatus = document.getElementById('subscriptionStatus');
-            subscriptionForm.addEventListener('submit', (e) => handleFormSubmit(e, subscriptionForm, subscriptionStatus));
-        }
-
-        const sections = document.querySelectorAll('main section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-        if (sections.length > 0 && navLinks.length > 0) {
-            const observerOptions = { root: null, rootMargin: '0px 0px -75% 0px', threshold: 0 };
-            const sectionObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    const id = entry.target.id;
-                    const correspondingNavLink = document.querySelector(`.nav-link[href="#${id}"]`);
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => link.classList.remove('active-link'));
-                        if (correspondingNavLink) {
-                            correspondingNavLink.classList.add('active-link');
-                        }
-                    }
-                });
-            }, observerOptions);
-            sections.forEach(section => {
-                sectionObserver.observe(section);
-            });
-        }
-        
-        const storyForm = document.getElementById('storyForm');
-        if (storyForm) {
-            const generateBtn = document.getElementById('generateStoryBtn');
-            const storyResultWrapper = document.getElementById('storyResultWrapper');
-            const storyResultDiv = document.getElementById('storyResult');
-            const storyLoader = document.getElementById('storyLoader');
-
-            const callGeminiAPI = async (prompt, retries = 3, delay = 1000) => {
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: [{ text: prompt }] }] };
-                
-                for (let i = 0; i < retries; i++) {
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        const result = await response.json();
-                        const candidate = result.candidates?.[0];
-                        if (candidate && candidate.content?.parts?.[0]?.text) {
-                            return candidate.content.parts[0].text;
-                        } else {
-                            throw new Error('Respuesta inesperada de la API.');
-                        }
-                    } catch (error) {
-                        console.error(`Intento ${i + 1} fallido:`, error);
-                        if (i === retries - 1) throw error;
-                        await new Promise(res => setTimeout(res, delay * Math.pow(2, i)));
-                    }
-                }
-            };
-
-            storyForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const characterName = document.getElementById('characterName').value.trim();
-                const storyValue = document.getElementById('storyValue').value.trim();
-                const storyPlace = document.getElementById('storyPlace').value.trim();
-
-                if (!characterName || !storyValue || !storyPlace) {
-                    alert('Por favor, completa todos los campos para crear tu cuento.');
-                    return;
-                }
-
-                storyResultWrapper.classList.remove('hidden');
-                storyResultDiv.classList.add('hidden');
-                storyResultDiv.classList.remove('story-result-show');
-                storyLoader.classList.remove('hidden');
-                generateBtn.disabled = true;
-
-                const prompt = `Escribe un cuento infantil muy corto, de no más de 150 palabras, ideal para un niño de 6 años. El personaje principal se llama '${characterName}'. La historia debe enseñar el valor de la '${storyValue}' y sucede en '${storyPlace}'. Usa un lenguaje sencillo, positivo y mágico, al estilo del cuento 'Obesita la Sirenita'.`;
-
-                try {
-                    const generatedStory = await callGeminiAPI(prompt);
-                    storyResultDiv.innerHTML = `<p class="comic-font text-lg leading-relaxed text-gray-700">${generatedStory.replace(/\n/g, '<br>')}</p>`;
-                } catch (error) {
-                    storyResultDiv.innerHTML = '<p class="text-red-600">¡Oh, no! Hubo un problema creando tu cuento. Por favor, inténtalo de nuevo más tarde.</p>';
-                    console.error('Error al llamar a la API de Gemini:', error);
-                } finally {
-                    storyLoader.classList.add('hidden');
-                    storyResultDiv.classList.remove('hidden');
-                    storyResultDiv.classList.add('story-result-show');
-                    generateBtn.disabled = false;
-                }
-            });
-        }
-    });
-    </script>
 
 <?php get_footer(); ?>
+
