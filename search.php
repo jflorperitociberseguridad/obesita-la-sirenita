@@ -50,10 +50,16 @@ get_header();
 						?>
 					</div>
 
-					<?php
-					// Paginación de resultados
-					the_posts_navigation();
-					?>
+					<div class="mt-12 text-center">
+						<?php
+						// Paginación de resultados mejorada
+						the_posts_pagination( array(
+							'mid_size'  => 2,
+							'prev_text' => __( '&laquo; Anterior', 'obesitasirenita' ),
+							'next_text' => __( 'Siguiente &raquo;', 'obesitasirenita' ),
+						) );
+						?>
+					</div>
 				</div>
 			</div>
 
@@ -66,7 +72,9 @@ get_header();
 					<p class="text-lg md:text-xl mt-4 mb-8 max-w-2xl mx-auto">
 						Lo sentimos, pero nada coincide con tus términos de búsqueda. Por favor, inténtalo de nuevo con palabras diferentes.
 					</p>
-					<?php get_search_form(); ?>
+					<div class="max-w-md mx-auto">
+						<?php get_search_form(); ?>
+					</div>
 				</div>
 			</section>
 
@@ -77,3 +85,4 @@ get_header();
 
 <?php
 get_footer();
+
