@@ -1,37 +1,38 @@
-/*
-Theme Name: Mi Tema Personalizado
-Author: Tu Nombre
-Description: Tema hecho a mano desde mi diseño HTML
-Version: 1.0
-*/
+/**
+ * Theme Name: Obesita la Sirenita
+ * Theme URI: https://obesitalasirenita.es/
+ * Author: Tu Nombre o el Nombre de tu Empresa
+ * Author URI: https://tu-web.com/
+ * Description: Un tema de WordPress mágico y educativo para presentar el cuento infantil "Obesita la Sirenita". Incluye un generador de cuentos con IA, diseño responsivo con Tailwind CSS y contenido gestionable desde el personalizador.
+ * Version: 1.0.0
+ * License: GNU General Public License v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Tags: one-column, custom-background, custom-menu, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready
+ * Text Domain: obesitasirenita
+ */
 
 /* Estilos personalizados para complementar Tailwind */
-body { 
-    font-family: 'Poppins', sans-serif; 
+body {
+    font-family: 'Poppins', sans-serif;
 }
 
-.comic-font { 
-    font-family: 'Comic Neue', cursive; 
+.comic-font {
+    font-family: 'Comic Neue', cursive;
 }
 
+/* Estilos para el fondo de la sección Hero */
 .underwater-bg {
-    background-image: url('https://img.freepik.com/free-vector/ocean-underwater-background-with-fishes_1308-132367.jpg?w=1380');
+    background: linear-gradient(145deg, rgba(93, 224, 230, 0.7) 0%, rgba(59, 130, 246, 0.8) 50%, rgba(30, 64, 175, 0.9) 100%),
+                url('assets/images/underwater-cartoon-bg.jpg') no-repeat center center;
     background-size: cover;
-    background-position: center;
     position: relative;
     overflow: hidden;
 }
 
-.underwater-bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(30, 64, 175, 0.6); 
-    z-index: 1;
+.text-shadow-strong {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
+
 
 .section-title {
     position: relative;
@@ -57,26 +58,21 @@ body {
     transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Estilo para el enlace activo en la navegación */
+/* Estilo para el enlace activo en el menú de navegación */
 .active-link {
-    color: #1d4ed8 !important; /* !important para asegurar la prioridad */
-    background-color: #eff6ff !important;
-    font-weight: 700;
+    color: #2563eb; /* text-blue-700 */
+    background-color: #dbeafe; /* bg-blue-100 */
 }
 
-/* Sombra para texto sobre imágenes */
-.text-shadow-strong {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
 
-/* Estilos para el Loader del Generador de Cuentos */
+/* Estilos para la nueva sección de "Crea tu cuento" */
 .loader {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3b82f6; /* Blue */
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    animation: spin 1.5s linear infinite;
+    animation: spin 1s linear infinite;
     margin: 0 auto;
 }
 
@@ -85,21 +81,30 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Nueva animación para el resultado del cuento */
-@keyframes fadeInGlow {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-        box-shadow: 0 0 5px rgba(59, 130, 246, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3), 0 8px 10px -6px rgba(59, 130, 246, 0.3);
-    }
+#storyResult {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateY(20px);
 }
 
-.story-result-show {
-    animation: fadeInGlow 0.8s ease-out forwards;
+#storyResult.story-result-show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: magical-glow 1.5s ease-in-out;
+}
+
+@keyframes magical-glow {
+    0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0); }
+    50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); }
+    100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0); }
+}
+
+/* Estilos para el slider Swiper.js */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #3b82f6; /* Azul de tu tema */
+}
+
+.swiper-pagination-bullet-active {
+    background: #3b82f6; /* Azul de tu tema */
 }
 
