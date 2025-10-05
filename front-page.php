@@ -1,13 +1,33 @@
-<?php get_header(); ?>
+<?php
+/**
+ * La plantilla para mostrar la página de inicio.
+ *
+ * Esta es la plantilla que WordPress usará como página de inicio
+ * si está configurada en Ajustes > Lectura.
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package Obesita_Sirenita
+ */
+
+get_header();
+?>
 
     <!-- =========== Hero Section =========== -->
-    <section id="home" class="underwater-bg text-white py-24 sm:py-32">
+    <?php
+        // Obtener valores del personalizador con valores por defecto
+        $hero_title_part1 = get_theme_mod('hero_title_part1', 'Sumérgete en un Océano de');
+        $hero_title_part2 = get_theme_mod('hero_title_part2', 'Valores y Aventura');
+        $hero_subtitle = get_theme_mod('hero_subtitle', 'Descubre una historia mágica que enseña a los más pequeños a quererse, respetar a los demás y cuidar nuestro maravilloso planeta.');
+        $hero_bg_image_url = get_theme_mod('hero_background_image');
+    ?>
+    <section id="home" class="underwater-bg text-white py-24 sm:py-32" style="<?php echo $hero_bg_image_url ? 'background-image: url(' . esc_url($hero_bg_image_url) . ');' : ''; ?>">
         <div class="container mx-auto px-4 z-10 relative text-center">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight comic-font mb-6 text-shadow-strong">
-                Sumérgete en un Océano de <span class="text-yellow-300">Valores y Aventura</span>
+                <?php echo esc_html($hero_title_part1); ?> <span class="text-yellow-300"><?php echo esc_html($hero_title_part2); ?></span>
             </h1>
             <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-shadow-strong">
-                Descubre una historia mágica que enseña a los más pequeños a quererse, respetar a los demás y cuidar nuestro maravilloso planeta.
+                <?php echo esc_html($hero_subtitle); ?>
             </p>
             <div class="flex flex-wrap gap-4 justify-center">
                 <a href="#book" class="bg-yellow-400 text-blue-900 px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition-transform hover:scale-105 shadow-2xl">
@@ -29,7 +49,6 @@
                     Cada página es una semilla de empatía, confianza y amor por el mundo que nos rodea.
                 </p>
             </div>
-            
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
                 <div class="flex flex-col items-center">
                     <div class="bg-gradient-to-br from-pink-100 to-pink-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
@@ -37,25 +56,25 @@
                     </div>
                     <h3 class="text-xl font-bold text-blue-800">Autoestima</h3>
                 </div>
-                 <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center">
                     <div class="bg-gradient-to-br from-purple-100 to-purple-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
-                       <i class="fas fa-users text-purple-500 text-4xl"></i>
+                        <i class="fas fa-users text-purple-500 text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-blue-800">Respeto</h3>
                 </div>
-                 <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center">
                     <div class="bg-gradient-to-br from-green-100 to-green-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
-                       <i class="fas fa-handshake-angle text-green-500 text-4xl"></i>
+                        <i class="fas fa-handshake-angle text-green-500 text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-blue-800">Amistad</h3>
                 </div>
-                 <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center">
                     <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
-                       <i class="fas fa-globe-americas text-yellow-500 text-4xl"></i>
+                        <i class="fas fa-globe-americas text-yellow-500 text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-blue-800">Diversidad</h3>
                 </div>
-                 <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center">
                     <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
                         <i class="fas fa-leaf text-cyan-500 text-4xl"></i>
                     </div>
@@ -68,18 +87,16 @@
     <!-- =========== Book Section =========== -->
     <section id="book" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
-             <div class="text-center mb-16">
+            <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">El Cuento que lo Empezó Todo</h2>
             </div>
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
                 <div class="lg:w-2/5">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portada-libro.jpg" alt="Portada del libro Obesita la Sirenita" class="w-full rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-500" loading="lazy">
                 </div>
-                
                 <div class="lg:w-3/5 space-y-6">
                     <h3 class="text-4xl font-bold text-blue-800 comic-font">Obesita la Sirenita</h3>
                     <p class="text-lg text-gray-700">Acompaña a Obesita en un emocionante viaje de autodescubrimiento. Aprenderá que la verdadera magia reside en su corazón y que ser diferente es su mayor superpoder. Una historia que te recordará el valor de ser auténtico.</p>
-                    
                     <div class="p-5 bg-blue-50 rounded-lg border-l-4 border-blue-500 text-gray-600">
                         <ul class="space-y-2">
                             <li><i class="fas fa-check-circle text-blue-500 mr-2"></i><strong>Edad recomendada:</strong> 4-8 años</li>
@@ -88,7 +105,6 @@
                             <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Impreso en papel reciclado con tintas ecológicas</li>
                         </ul>
                     </div>
-                    
                     <div>
                         <p class="text-4xl font-bold text-blue-800 mb-4">15.99 €</p>
                         <a href="#" class="w-full text-center bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-700 transition-transform hover:scale-105 shadow-lg inline-block">
@@ -100,8 +116,39 @@
         </div>
     </section>
     
+    <!-- =========== Gallery Section =========== -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Galería de Momentos Mágicos</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+                    Un vistazo al mundo submarino y los personajes que te robarán el corazón.
+                </p>
+            </div>
+            
+            <!-- Swiper Slider -->
+            <div class="swiper-container relative max-w-4xl mx-auto">
+                <div class="swiper-wrapper">
+                    <?php
+                    for ( $i = 1; $i <= 5; $i++ ) {
+                        $image_url = get_theme_mod( "gallery_image_$i" );
+                        if ( $image_url ) {
+                            echo '<div class="swiper-slide"><img src="' . esc_url( $image_url ) . '" class="rounded-lg shadow-lg" alt="Imagen de la galería ' . $i . '"></div>';
+                        }
+                    }
+                    ?>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== Gemini API Section =========== -->
-    <section id="create-story" class="py-20 bg-white">
+    <section id="create-story" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Crea Tu Propio Cuento Mágico</h2>
@@ -109,7 +156,7 @@
                     ¡Usa tu imaginación y crea una nueva aventura! Escribe tus ideas y la magia de la IA creará un cuento solo para ti.
                 </p>
             </div>
-            <div class="max-w-2xl mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 p-8 rounded-2xl shadow-xl">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
                 <form id="storyForm" class="space-y-6">
                     <div>
                         <label for="characterName" class="block text-gray-700 font-semibold mb-2">1. Nombre del protagonista</label>
@@ -130,7 +177,7 @@
             </div>
 
             <div id="storyResultWrapper" class="max-w-3xl mx-auto mt-12 hidden">
-                 <div id="storyLoader" class="text-center hidden">
+                <div id="storyLoader" class="text-center hidden">
                     <div class="loader"></div>
                     <p class="text-lg text-blue-800 comic-font mt-4">Creando tu historia mágica...</p>
                 </div>
@@ -141,8 +188,9 @@
         </div>
     </section>
 
-    <!-- =========== Mission Section =========== -->
-    <section id="mission" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+    <!-- (El resto de secciones: Misión, Autora, Equipo, etc., irían aquí) -->
+     <!-- =========== Mission Section =========== -->
+    <section id="mission" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Nuestra Misión</h2>
@@ -171,7 +219,7 @@
     </section>
 
     <!-- =========== Author Section =========== -->
-    <section id="author" class="py-20 bg-white">
+    <section id="author" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
              <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Conoce a la Autora</h2>
@@ -195,7 +243,7 @@
     </section>
 
     <!-- =========== Team Section =========== -->
-    <section id="team" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+    <section id="team" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Equipo Creativo</h2>
@@ -204,19 +252,19 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-5xl mx-auto">
-                <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                <div class="text-center bg-gray-50 p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/angelica.jpg" alt="Angélica Aguiar" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Angélica Aguiar</h3>
                     <p class="font-semibold text-blue-500 mb-3">Ilustradora Principal</p>
                     <p class="text-gray-600">Creadora de los hermosos mundos visuales que acompañan nuestras historias.</p>
                 </div>
-                <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                <div class="text-center bg-gray-50 p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/carlos.jpg" alt="Carlos Martínez" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Carlos Martínez</h3>
                     <p class="font-semibold text-blue-500 mb-3">Editor Creativo</p>
                     <p class="text-gray-600">Garante de la calidad narrativa y coherencia de nuestras historias.</p>
                 </div>
-                <div class="text-center bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
+                <div class="text-center bg-gray-50 p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/luisa.jpg" alt="Luisa González" class="w-32 h-32 rounded-full mb-4 mx-auto shadow-md">
                     <h3 class="text-2xl font-bold text-blue-800 mb-1">Luisa González</h3>
                     <p class="font-semibold text-blue-500 mb-3">Especialista en Educación</p>
@@ -227,7 +275,7 @@
     </section>
     
     <!-- =========== Testimonials Section =========== -->
-    <section id="testimonials" class="py-20 bg-white">
+    <section id="testimonials" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Lo que dicen nuestros lectores</h2>
@@ -271,14 +319,14 @@
     </section>
 
     <!-- =========== FAQ Section =========== -->
-    <section id="faq" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
+    <section id="faq" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Preguntas Frecuentes</h2>
             </div>
             <div class="max-w-3xl mx-auto space-y-4">
                 <div>
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-white rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
+                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
                         <span class="font-semibold text-lg text-blue-900">¿Para qué edad está recomendado el cuento?</span>
                         <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
                     </button>
@@ -287,7 +335,7 @@
                     </div>
                 </div>
                  <div>
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-white rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
+                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
                         <span class="font-semibold text-lg text-blue-900">¿Qué valores principales se trabajan en la historia?</span>
                         <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
                     </button>
@@ -296,7 +344,7 @@
                     </div>
                 </div>
                  <div>
-                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-white rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
+                    <button class="faq-btn flex justify-between items-center w-full text-left p-5 bg-gray-50 rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
                         <span class="font-semibold text-lg text-blue-900">¿Realizáis envíos internacionales?</span>
                         <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
                     </button>
@@ -309,7 +357,7 @@
     </section>
 
     <!-- =========== Contact Section =========== -->
-    <section id="contact" class="py-20 bg-white">
+    <section id="contact" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">¡Hablemos!</h2>
@@ -341,38 +389,6 @@
             </div>
         </div>
     </section>
-    
-    <!-- =========== Modals (Pop-ups) =========== -->
-    <div id="trailerModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden" aria-modal="true" role="dialog">
-        <div class="bg-white rounded-lg w-full max-w-3xl relative">
-            <button id="closeTrailerModal" class="absolute -top-4 -right-4 w-10 h-10 bg-white text-black rounded-full text-2xl" aria-label="Cerrar vídeo">&times;</button>
-            <div class="aspect-w-16 aspect-h-9">
-                <iframe id="youtube-player" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-    
-    <div id="subscriptionModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 opacity-0 invisible transition-opacity duration-500">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full relative transform scale-95 transition-transform duration-500">
-            <button id="closeSubscriptionModal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800" aria-label="Cerrar suscripción">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-            <div class="text-center">
-                <h3 class="text-2xl font-bold text-blue-800 comic-font mb-2">¡Únete a la Aventura!</h3>
-                <p class="text-gray-600 mb-6">Suscríbete para recibir noticias, actividades gratuitas y ofertas especiales.</p>
-                <form id="subscriptionForm" action="https://formspree.io/f/TU_ID_UNICO_SUSCRIPCION" method="POST" class="space-y-4">
-                    <div>
-                        <label for="popup-email" class="sr-only">Email</label>
-                        <input type="email" id="popup-email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="tu@email.com" required>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full font-bold hover:bg-blue-700 transition-transform hover:scale-105">
-                        ¡Suscribirme!
-                    </button>
-                </form>
-                 <p id="subscriptionStatus" class="mt-4 text-center"></p>
-            </div>
-        </div>
-    </div>
 
 <?php get_footer(); ?>
 
