@@ -17,8 +17,8 @@ function obesita_sirenita_assets() {
     // Hoja de estilos personalizada (si la creaste)
     wp_enqueue_style( 'custom-style', get_template_directory_uri() . '/style.css' );
 
-    // JavaScript principal
-    wp_enqueue_script( 'main-js', get_template_directory_uri() . '/js/main.js', array(), '1.0', true );
+    // JavaScript principal (asumiendo que crearás un archivo main.js en una carpeta js)
+    // wp_enqueue_script( 'main-js', get_template_directory_uri() . '/js/main.js', array(), '1.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'obesita_sirenita_assets' );
 
@@ -39,6 +39,21 @@ function obesita_sirenita_setup() {
 }
 add_action( 'after_setup_theme', 'obesita_sirenita_setup' );
 
+// Registrar zona de widgets (sidebar)
+function obesita_sirenita_widgets_init() {
+    register_sidebar( array(
+        'name'          => esc_html__( 'Barra Lateral Principal', 'obesitasirenita' ),
+        'id'            => 'primary-sidebar',
+        'description'   => esc_html__( 'Añade widgets aquí para que aparezcan en tu barra lateral.', 'obesitasirenita' ),
+        'before_widget' => '<section id="%1$s" class="widget bg-white p-6 rounded-lg shadow-md %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title text-xl font-bold text-blue-800 mb-4">',
+        'after_title'   => '</h2>',
+    ) );
+}
+add_action( 'widgets_init', 'obesita_sirenita_widgets_init' );
+
+
 // Clases personalizadas para aplicar estilos de Tailwind a los menús
 class Tailwind_Nav_Walker extends Walker_Nav_Menu {
     function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
@@ -55,3 +70,4 @@ class Tailwind_Mobile_Nav_Walker extends Walker_Nav_Menu {
 }
 
 ?>
+
