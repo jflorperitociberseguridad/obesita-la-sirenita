@@ -1,6 +1,6 @@
 <?php
 /**
- * La plantilla para mostrar todas las páginas.
+ * La plantilla para mostrar todas las páginas con su barra lateral específica.
  *
  * @package Obesita_Sirenita
  */
@@ -67,9 +67,9 @@ get_header();
             </main><!-- #main -->
         </div><!-- #primary -->
 
-        <!-- Columna de la Barra Lateral (Sidebar) -->
+        <!-- Columna de la Barra Lateral para Páginas -->
         <div class="w-full lg:w-1/3 px-4 mt-8 lg:mt-0">
-            <?php get_sidebar(); ?>
+            <?php get_sidebar( 'page' ); // Llama específicamente a sidebar-page.php ?>
         </div>
 
     </div>
