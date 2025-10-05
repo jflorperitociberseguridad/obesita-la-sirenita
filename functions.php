@@ -65,13 +65,22 @@ add_action( 'wp_enqueue_scripts', 'obesita_sirenita_scripts' );
 
 
 /**
- * Registrar zona de widgets para la barra lateral.
+ * Registrar zonas de widgets (Sidebars).
  */
 function obesita_sirenita_widgets_init() {
 	register_sidebar( array(
-		'name'          => esc_html__( 'Barra Lateral Principal', 'obesitasirenita' ),
-		'id'            => 'sidebar-1',
-		'description'   => esc_html__( 'Añade widgets aquí.', 'obesitasirenita' ),
+		'name'          => esc_html__( 'Barra Lateral de Páginas', 'obesitasirenita' ),
+		'id'            => 'page-sidebar',
+		'description'   => esc_html__( 'Añade widgets aquí para que aparezcan en las páginas.', 'obesitasirenita' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s bg-white p-6 rounded-lg shadow-md mb-8">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title text-2xl font-bold text-blue-800 mb-4">',
+		'after_title'   => '</h2>',
+	) );
+    register_sidebar( array(
+		'name'          => esc_html__( 'Barra Lateral del Blog', 'obesitasirenita' ),
+		'id'            => 'blog-sidebar',
+		'description'   => esc_html__( 'Añade widgets aquí para que aparezcan en las entradas del blog.', 'obesitasirenita' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s bg-white p-6 rounded-lg shadow-md mb-8">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title text-2xl font-bold text-blue-800 mb-4">',
@@ -85,20 +94,17 @@ add_action( 'widgets_init', 'obesita_sirenita_widgets_init' );
  * Endpoint AJAX para gestionar la llamada a la API de Gemini de forma segura.
  */
 function get_gemini_story_callback() {
-    // 1. Verificación de seguridad (Nonce)
     if ( ! check_ajax_referer( 'gemini_nonce', 'nonce', false ) ) {
         wp_send_json_error( array('message' => 'Error de seguridad. Por favor, recarga la página.'), 403 );
         return;
     }
 
-    // 2. Validar el prompt
     if ( ! isset( $_POST['prompt'] ) || empty( $_POST['prompt'] ) ) {
         wp_send_json_error( array('message' => 'El prompt está vacío.'), 400 );
         return;
     }
     $prompt = sanitize_textarea_field( $_POST['prompt'] );
 
-    // 3. Comprobar la clave de API
     if ( ! defined( 'GEMINI_API_KEY' ) || empty( GEMINI_API_KEY ) ) {
         wp_send_json_error( array('message' => 'Error: La clave de la API de Gemini no está definida en tu archivo wp-config.php.'), 500 );
         return;
@@ -106,7 +112,6 @@ function get_gemini_story_callback() {
     $api_key = GEMINI_API_KEY;
     $api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=' . $api_key;
     
-    // 4. Hacer la llamada a la API
     $response = wp_remote_post( $api_url, array(
         'method'    => 'POST',
         'headers'   => array( 'Content-Type' => 'application/json' ),
@@ -114,7 +119,6 @@ function get_gemini_story_callback() {
         'timeout'   => 30,
     ) );
 
-    // 5. Gestionar errores de la llamada
     if ( is_wp_error( $response ) ) {
         wp_send_json_error( array('message' => 'Error de conexión con la API: ' . $response->get_error_message()), 500 );
         return;
@@ -128,7 +132,6 @@ function get_gemini_story_callback() {
         return;
     }
 
-    // 6. Procesar y devolver la respuesta correcta
     $response_body = json_decode( wp_remote_retrieve_body( $response ), true );
     $story = $response_body['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
@@ -192,4 +195,5 @@ class Obesita_Sirenita_Mobile_Nav_Walker extends Walker_Nav_Menu {
         $output .= "</a>";
     }
 }
+?>
 
