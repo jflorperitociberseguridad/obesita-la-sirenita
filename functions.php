@@ -1,9 +1,6 @@
 <?php
 /**
- * OPCIÓN 4: La Versión Final con IA.
- *
- * Esta es la versión completa y recomendada. Incluye todas las características:
- * base, menús, widgets, personalizador y la lógica segura para la API de Gemini.
+ * Funciones y definiciones del tema Obesita la Sirenita.
  *
  * @package Obesita_Sirenita
  */
@@ -18,6 +15,14 @@ if ( ! function_exists( 'obesita_sirenita_setup' ) ) :
 
         // Habilitar imágenes destacadas.
         add_theme_support( 'post-thumbnails' );
+
+        // Habilitar el logotipo personalizado desde el personalizador.
+        add_theme_support( 'custom-logo', array(
+            'height'      => 100,
+            'width'       => 400,
+            'flex-height' => true,
+            'flex-width'  => true,
+        ) );
 
 		// Registrar menú de navegación principal.
 		register_nav_menus( array(
@@ -156,11 +161,11 @@ function obesita_sirenita_customize_register( $wp_customize ) {
     $wp_customize->add_setting( 'hero_background_image', array( 'sanitize_callback' => 'esc_url_raw' ) );
     $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'hero_background_image', array( 'label' => __( 'Imagen de Fondo', 'obesitasirenita' ), 'section' => 'hero_section' ) ) );
 
-    // Sección de Galería
+    // Sección de Galería (AMPLIADA A 8 IMÁGENES)
     $wp_customize->add_section( 'gallery_section', array(
         'title' => __( 'Galería de Fotos', 'obesitasirenita' ), 'panel' => 'frontpage_panel', 'priority' => 20,
     ) );
-    for ($i = 1; $i <= 5; $i++) {
+    for ($i = 1; $i <= 8; $i++) { // Bucle actualizado a 8
         $wp_customize->add_setting( "gallery_image_$i", array( 'sanitize_callback' => 'esc_url_raw' ) );
         $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "gallery_image_$i", array(
             'label' => __( 'Imagen de la Galería ', 'obesitasirenita' ) . $i, 'section' => 'gallery_section',
