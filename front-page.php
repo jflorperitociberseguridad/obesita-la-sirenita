@@ -2,11 +2,6 @@
 /**
  * La plantilla para mostrar la página de inicio.
  *
- * Esta es la plantilla que WordPress usará como página de inicio
- * si está configurada en Ajustes > Lectura.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
  * @package Obesita_Sirenita
  */
 
@@ -125,8 +120,6 @@ get_header();
                     Un vistazo al mundo submarino y los personajes que te robarán el corazón.
                 </p>
             </div>
-            
-            <!-- Swiper Slider -->
             <div class="swiper-container relative max-w-4xl mx-auto">
                 <div class="swiper-wrapper">
                     <?php
@@ -138,9 +131,7 @@ get_header();
                     }
                     ?>
                 </div>
-                <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
-                <!-- Add Navigation -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
@@ -175,26 +166,23 @@ get_header();
                     </button>
                 </form>
             </div>
-
             <div id="storyResultWrapper" class="max-w-3xl mx-auto mt-12 hidden">
                 <div id="storyLoader" class="text-center hidden">
                     <div class="loader"></div>
                     <p class="text-lg text-blue-800 comic-font mt-4">Creando tu historia mágica...</p>
                 </div>
                 <div id="storyResult" class="bg-white p-8 sm:p-10 rounded-2xl border-4 border-blue-200 opacity-0">
-                    <!-- El cuento generado aparecerá aquí -->
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- (El resto de secciones: Misión, Autora, Equipo, etc., irían aquí) -->
-     <!-- =========== Mission Section =========== -->
+    <!-- =========== Mission Section =========== -->
     <section id="mission" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Nuestra Misión</h2>
-                 <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
                     Inspirar a los niños a ser ellos mismos, a quererse y a cuidar nuestro hermoso planeta.
                 </p>
             </div>
@@ -221,7 +209,7 @@ get_header();
     <!-- =========== Author Section =========== -->
     <section id="author" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4">
-             <div class="text-center mb-16">
+            <div class="text-center mb-16">
                 <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-900">Conoce a la Autora</h2>
             </div>
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
