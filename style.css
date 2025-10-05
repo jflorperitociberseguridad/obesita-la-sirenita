@@ -8,9 +8,22 @@ body {
 }
 
 .underwater-bg {
-    background: linear-gradient(145deg, #5de0e6 0%, #3b82f6 50%, #1e40af 100%);
+    background-image: url('https://img.freepik.com/free-vector/ocean-underwater-background-with-fishes_1308-132367.jpg?w=1380');
+    background-size: cover;
+    background-position: center;
     position: relative;
     overflow: hidden;
+}
+
+.underwater-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 64, 175, 0.6); 
+    z-index: 1;
 }
 
 .section-title {
@@ -41,4 +54,45 @@ body {
 .active-link {
     color: #1d4ed8 !important; /* !important para asegurar la prioridad */
     background-color: #eff6ff !important;
+    font-weight: 700;
 }
+
+/* Sombra para texto sobre imágenes */
+.text-shadow-strong {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para el Loader del Generador de Cuentos */
+.loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3b82f6; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Nueva animación para el resultado del cuento */
+@keyframes fadeInGlow {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3), 0 8px 10px -6px rgba(59, 130, 246, 0.3);
+    }
+}
+
+.story-result-show {
+    animation: fadeInGlow 0.8s ease-out forwards;
+}
+
