@@ -1,0 +1,56 @@
+/**
+ * Theme Name: Obesita la Sirenita
+ * RTL: Right-to-Left Stylesheet
+ *
+ * Este archivo se carga automáticamente cuando el idioma del sitio
+ * está configurado como uno de derecha a izquierda.
+ */
+
+body {
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+/* Ajustes Generales de Texto y Flotantes */
+.text-left { text-align: right; }
+.text-right { text-align: left; }
+
+.float-left { float: right; }
+.float-right { float: left; }
+
+/* Invertir clases de espaciado de Tailwind */
+.space-x-1 > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 1; }
+.space-x-3 > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 1; }
+.space-x-5 > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 1; }
+.space-x-6 > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 1; }
+
+/* Invertir márgenes de iconos */
+.mr-2 { margin-left: 0.5rem; margin-right: 0; }
+.mr-3 { margin-left: 0.75rem; margin-right: 0; }
+.ml-4 { margin-right: 1rem; margin-left: 0; }
+
+/* Ajustes específicos de componentes */
+
+/* Borde en la sección del libro */
+.border-l-4 {
+    border-left-width: 0;
+    border-right-width: 4px;
+}
+
+/* Icono del acordeón de FAQ */
+.faq-btn i {
+    transform: rotate(180deg);
+}
+
+.faq-btn i.rotate-180 {
+    transform: rotate(0deg);
+}
+
+/* Justificación de elementos en el footer */
+.md\:text-left {
+    text-align: right;
+}
+
+.md\:justify-start {
+    justify-content: flex-end;
+}
