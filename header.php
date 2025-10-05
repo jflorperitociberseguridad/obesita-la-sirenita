@@ -3,23 +3,34 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php bloginfo('description'); ?>">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class('bg-blue-50 text-gray-800 antialiased'); ?>>
-<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'obesitasirenita' ); ?></a>
+<?php wp_body_open(); ?>
+<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Saltar al contenido', 'obesitasirenita' ); ?></a>
 
 <header id="header" class="bg-white/90 backdrop-blur-lg shadow-md sticky top-0 z-50 transition-all duration-300">
     <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
-            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center space-x-3" aria-label="Inicio de Obesita la Sirenita">
-                <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                    <i class="fas fa-water text-white text-2xl"></i>
-                </div>
-                <span class="text-2xl font-bold text-blue-800 comic-font hidden sm:block"><?php bloginfo('name'); ?></span>
-            </a>
             
-            <nav class="hidden md:flex items-center space-x-1 lg:space-x-3" aria-label="Navegación principal">
+            <div class="site-branding">
+                <?php
+                if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
+                    the_custom_logo();
+                } else {
+                    ?>
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center space-x-3" rel="home">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                            <i class="fas fa-water text-white text-2xl"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-blue-800 comic-font hidden sm:block"><?php bloginfo('name'); ?></span>
+                    </a>
+                    <?php
+                }
+                ?>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-3" aria-label="<?php esc_attr_e( 'Navegación principal', 'obesitasirenita' ); ?>">
                 <?php
                 if ( has_nav_menu( 'menu-principal' ) ) {
                     wp_nav_menu( array(
@@ -44,11 +55,11 @@
            <?php
             if ( has_nav_menu( 'menu-principal' ) ) {
                  wp_nav_menu( array(
-                    'theme_location' => 'menu-principal',
-                    'container'      => false,
-                    'items_wrap'     => '%3$s',
-                    'walker'         => new Obesita_Sirenita_Mobile_Nav_Walker(),
-                ) );
+                     'theme_location' => 'menu-principal',
+                     'container'      => false,
+                     'items_wrap'     => '%3$s',
+                     'walker'         => new Obesita_Sirenita_Mobile_Nav_Walker(),
+                 ) );
             }
             ?>
             <a href="#contact" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Contacto</a>
