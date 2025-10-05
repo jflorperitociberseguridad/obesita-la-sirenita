@@ -1,6 +1,9 @@
 <?php
 /**
- * Funciones y definiciones del tema Obesita la Sirenita.
+ * OPCIÓN 4: La Versión Final con IA.
+ *
+ * Esta es la versión completa y recomendada. Incluye todas las características:
+ * base, menús, widgets, personalizador y la lógica segura para la API de Gemini.
  *
  * @package Obesita_Sirenita
  */
@@ -40,11 +43,12 @@ function obesita_sirenita_scripts() {
 	// Google Fonts.
 	wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Comic+Neue:wght@400;700&display=swap', array(), null );
     
-    // Hoja de estilos para idiomas RTL (derecha a izquierda).
-    wp_style_add_data( 'obesita-sirenita-style', 'rtl', 'replace' );
+    // Cargar la librería Swiper.js para el slider de la galería.
+    wp_enqueue_style( 'swiper-css', 'https://unpkg.com/swiper/swiper-bundle.min.css', array(), '11.0.5' );
+    wp_enqueue_script( 'swiper-js', 'https://unpkg.com/swiper/swiper-bundle.min.js', array(), '11.0.5', true );
 
-    // Script principal del tema.
-    wp_enqueue_script( 'obesita-sirenita-main-js', get_template_directory_uri() . '/assets/js/main.js', array(), wp_get_theme()->get( 'Version' ), true );
+    // Script principal del tema (main.js).
+    wp_enqueue_script( 'obesita-sirenita-main-js', get_template_directory_uri() . '/assets/js/main.js', array( 'jquery', 'swiper-js' ), wp_get_theme()->get( 'Version' ), true );
 
     // Pasar datos de PHP a JavaScript de forma segura (para la llamada a Gemini).
     wp_localize_script( 'obesita-sirenita-main-js', 'gemini_ajax_object', array(
@@ -76,21 +80,28 @@ add_action( 'widgets_init', 'obesita_sirenita_widgets_init' );
  * Endpoint AJAX para gestionar la llamada a la API de Gemini de forma segura.
  */
 function get_gemini_story_callback() {
-    check_ajax_referer( 'gemini_nonce', 'nonce' );
-
-    if ( ! isset( $_POST['prompt'] ) || empty( $_POST['prompt'] ) ) {
-        wp_send_json_error( array('message' => 'El prompt está vacío.') );
+    // 1. Verificación de seguridad (Nonce)
+    if ( ! check_ajax_referer( 'gemini_nonce', 'nonce', false ) ) {
+        wp_send_json_error( array('message' => 'Error de seguridad. Por favor, recarga la página.'), 403 );
+        return;
     }
 
+    // 2. Validar el prompt
+    if ( ! isset( $_POST['prompt'] ) || empty( $_POST['prompt'] ) ) {
+        wp_send_json_error( array('message' => 'El prompt está vacío.'), 400 );
+        return;
+    }
     $prompt = sanitize_textarea_field( $_POST['prompt'] );
 
+    // 3. Comprobar la clave de API
     if ( ! defined( 'GEMINI_API_KEY' ) || empty( GEMINI_API_KEY ) ) {
-        wp_send_json_error( array('message' => 'La clave de la API de Gemini no está definida en tu archivo wp-config.php.') );
+        wp_send_json_error( array('message' => 'Error: La clave de la API de Gemini no está definida en tu archivo wp-config.php.'), 500 );
+        return;
     }
     $api_key = GEMINI_API_KEY;
-
     $api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=' . $api_key;
     
+    // 4. Hacer la llamada a la API
     $response = wp_remote_post( $api_url, array(
         'method'    => 'POST',
         'headers'   => array( 'Content-Type' => 'application/json' ),
@@ -98,28 +109,33 @@ function get_gemini_story_callback() {
         'timeout'   => 30,
     ) );
 
+    // 5. Gestionar errores de la llamada
     if ( is_wp_error( $response ) ) {
-        wp_send_json_error( array('message' => 'Error al conectar con la API: ' . $response->get_error_message()) );
+        wp_send_json_error( array('message' => 'Error de conexión con la API: ' . $response->get_error_message()), 500 );
+        return;
     }
 
     $response_code = wp_remote_retrieve_response_code($response);
     if($response_code !== 200){
         $error_body = json_decode(wp_remote_retrieve_body($response), true);
         $error_message = $error_body['error']['message'] ?? 'Error desconocido en la API.';
-        wp_send_json_error( array('message' => 'La API ha devuelto un error (' . $response_code . '): ' . $error_message) );
+        wp_send_json_error( array('message' => 'Error de la API (' . $response_code . '): ' . $error_message), 500 );
+        return;
     }
 
+    // 6. Procesar y devolver la respuesta correcta
     $response_body = json_decode( wp_remote_retrieve_body( $response ), true );
     $story = $response_body['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
     if ( empty( $story ) ) {
-        wp_send_json_error( array('message' => 'No se pudo generar el cuento. La respuesta de la API estaba vacía.') );
+        wp_send_json_error( array('message' => 'No se pudo generar el cuento. La respuesta de la API estaba vacía.'), 500 );
     } else {
         wp_send_json_success( $story );
     }
 }
 add_action( 'wp_ajax_get_gemini_story', 'get_gemini_story_callback' );
 add_action( 'wp_ajax_nopriv_get_gemini_story', 'get_gemini_story_callback' );
+
 
 /**
  * Añadir opciones de personalización al tema.
@@ -139,11 +155,23 @@ function obesita_sirenita_customize_register( $wp_customize ) {
     $wp_customize->add_control( 'hero_subtitle', array( 'label' => __( 'Subtítulo', 'obesitasirenita' ), 'section' => 'hero_section', 'type' => 'textarea' ) );
     $wp_customize->add_setting( 'hero_background_image', array( 'sanitize_callback' => 'esc_url_raw' ) );
     $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'hero_background_image', array( 'label' => __( 'Imagen de Fondo', 'obesitasirenita' ), 'section' => 'hero_section' ) ) );
+
+    // Sección de Galería
+    $wp_customize->add_section( 'gallery_section', array(
+        'title' => __( 'Galería de Fotos', 'obesitasirenita' ), 'panel' => 'frontpage_panel', 'priority' => 20,
+    ) );
+    for ($i = 1; $i <= 5; $i++) {
+        $wp_customize->add_setting( "gallery_image_$i", array( 'sanitize_callback' => 'esc_url_raw' ) );
+        $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "gallery_image_$i", array(
+            'label' => __( 'Imagen de la Galería ', 'obesitasirenita' ) . $i, 'section' => 'gallery_section',
+        ) ) );
+    }
 }
 add_action( 'customize_register', 'obesita_sirenita_customize_register' );
 
+
 /**
- * Clases Walker personalizadas para aplicar estilos de Tailwind a los menús de WordPress.
+ * Clases Walker personalizadas para los menús.
  */
 class Obesita_Sirenita_Nav_Walker extends Walker_Nav_Menu {
     function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
