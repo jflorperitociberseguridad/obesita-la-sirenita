@@ -50,6 +50,12 @@
             overflow: hidden;
             transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
+
+        /* Estilo para el enlace activo en la navegación */
+        .active-link {
+            color: #1d4ed8 !important; /* !important para asegurar la prioridad */
+            background-color: #eff6ff !important;
+        }
     </style>
 </head>
 <body class="bg-blue-50 text-gray-800 antialiased">
@@ -66,11 +72,11 @@
                 </a>
                 
                 <nav class="hidden md:flex items-center space-x-1 lg:space-x-3" aria-label="Navegación principal">
-                    <a href="#values" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Valores</a>
-                    <a href="#book" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">El Cuento</a>
-                    <a href="#mission" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Misión</a>
-                    <a href="#author" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Autora</a>
-                    <a href="#team" class="nav-item px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Equipo</a>
+                    <a href="#values" class="nav-link px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Valores</a>
+                    <a href="#book" class="nav-link px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">El Cuento</a>
+                    <a href="#mission" class="nav-link px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Misión</a>
+                    <a href="#author" class="nav-link px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Autora</a>
+                    <a href="#team" class="nav-link px-3 py-2 rounded-md text-gray-600 hover:bg-blue-100 hover:text-blue-700 font-semibold transition-colors">Equipo</a>
                     <a href="#contact" class="bg-blue-600 text-white px-5 py-2 rounded-full font-bold hover:bg-blue-700 transition-transform hover:scale-105 shadow-md">Contacto</a>
                 </nav>
                 
@@ -82,12 +88,12 @@
         
         <nav id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
             <div class="px-4 pt-2 pb-4 space-y-2">
-                <a href="#values" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Valores</a>
-                <a href="#book" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">El Cuento</a>
-                <a href="#mission" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Misión</a>
-                <a href="#author" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Autora</a>
-                <a href="#team" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Equipo</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Contacto</a>
+                <a href="#values" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Valores</a>
+                <a href="#book" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">El Cuento</a>
+                <a href="#mission" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Misión</a>
+                <a href="#author" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Autora</a>
+                <a href="#team" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Equipo</a>
+                <a href="#contact" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 font-semibold">Contacto</a>
             </div>
         </nav>
     </header>
@@ -505,6 +511,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
+        // --- Manejo del Header al hacer scroll ---
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -516,6 +523,7 @@
             }
         });
 
+        // --- Menú Móvil ---
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileNavLinks = mobileMenu.querySelectorAll('a');
@@ -530,6 +538,7 @@
             if (!mobileMenu.classList.contains('hidden')) toggleMenu();
         }));
         
+        // --- Acordeón de Preguntas Frecuentes (FAQ) ---
         const faqBtns = document.querySelectorAll('.faq-btn');
         faqBtns.forEach(button => {
             button.addEventListener('click', () => {
@@ -553,6 +562,7 @@
             });
         });
 
+        // --- Modal del Trailer ---
         const trailerModal = document.getElementById('trailerModal');
         const trailerBtn = document.getElementById('trailerBtn');
         const closeTrailerModal = document.getElementById('closeTrailerModal');
@@ -570,6 +580,7 @@
             if (e.target === trailerModal) stopVideo();
         });
 
+        // --- Modal de Suscripción ---
         const subscriptionModal = document.getElementById('subscriptionModal');
         const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
         
@@ -587,6 +598,7 @@
         setTimeout(showSubscriptionModal, 10000);
         closeSubscriptionModal.addEventListener('click', hideSubscriptionModal);
         
+        // --- Lógica de envío de formularios ---
         async function handleFormSubmit(event, form, statusElement) {
             event.preventDefault();
             const data = new FormData(event.target);
@@ -623,7 +635,36 @@
         const subscriptionStatus = document.getElementById('subscriptionStatus');
         subscriptionForm.addEventListener('submit', (e) => handleFormSubmit(e, subscriptionForm, subscriptionStatus));
 
+        // --- Actualizar año en el footer ---
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- NUEVA FUNCIONALIDAD: Resaltar enlace de navegación activo ---
+        const sections = document.querySelectorAll('main section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null, // el viewport
+            rootMargin: '-50% 0px -50% 0px', // se activa cuando el centro de la sección pasa por el centro de la pantalla
+            threshold: 0
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.remove('active-link');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active-link');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
     });
     </script>
 </body>
