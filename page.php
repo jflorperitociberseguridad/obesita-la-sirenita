@@ -9,10 +9,10 @@ get_header();
 ?>
 
 <div class="container mx-auto py-12 px-4">
-    <div class="flex flex-wrap lg:flex-nowrap -mx-4">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
 
-        <!-- Columna Principal de Contenido -->
-        <div id="primary" class="content-area w-full lg:w-2/3 px-4">
+        <!-- Columna Principal de Contenido (ocupa 2 de 3 columnas) -->
+        <div id="primary" class="content-area lg:col-span-2">
             <main id="main" class="site-main bg-white p-8 rounded-lg shadow-md">
 
                 <?php
@@ -43,13 +43,8 @@ get_header();
                                 edit_post_link(
                                     sprintf(
                                         wp_kses(
-                                            /* translators: %s: Name of current post. Only visible to screen readers */
                                             __( 'Editar <span class="screen-reader-text">%s</span>', 'obesitasirenita' ),
-                                            array(
-                                                'span' => array(
-                                                    'class' => array(),
-                                                ),
-                                            )
+                                            array( 'span' => array( 'class' => array() ) )
                                         ),
                                         get_the_title()
                                     ),
@@ -67,8 +62,8 @@ get_header();
             </main><!-- #main -->
         </div><!-- #primary -->
 
-        <!-- Columna de la Barra Lateral para Páginas -->
-        <div class="w-full lg:w-1/3 px-4 mt-8 lg:mt-0">
+        <!-- Columna de la Barra Lateral (ocupa 1 de 3 columnas) -->
+        <div class="w-full lg:col-span-1 mt-8 lg:mt-0">
             <?php get_sidebar( 'page' ); // Llama específicamente a sidebar-page.php ?>
         </div>
 
