@@ -1,9 +1,8 @@
-// api/generate.js - Versión Final Definitiva y Sincronizada
+// api/generate.js - Versión Final Corregida
 
 // --- FUNCIÓN PRINCIPAL (Handler de Vercel) ---
 export default async function handler(req) {
     // --- PASO 1: Comprobación de Seguridad Esencial ---
-    // Verifica si la clave API está disponible. Si no, devuelve un error claro.
     if (!process.env.GEMINI_API_KEY) {
         console.error("Error Crítico: La variable de entorno GEMINI_API_KEY no está configurada en Vercel.");
         return new Response(JSON.stringify({
@@ -20,7 +19,10 @@ export default async function handler(req) {
             return new Response(JSON.stringify({ error: 'Método no permitido. Solo se aceptan solicitudes POST.' }), { status: 405 });
         }
 
-        const { type, payload } = await req.json();
+        // --- LA CORRECCIÓN ESTÁ AQUÍ ---
+        // Vercel entrega el cuerpo de la solicitud ya procesado en `req.body`
+        // en lugar de necesitar `await req.json()`.
+        const { type, payload } = req.body;
 
         // Verificación de que el cuerpo de la solicitud es correcto
         if (!type || !payload) {
@@ -64,7 +66,6 @@ async function generateText(payload) {
     
     const requestBody = {
         contents: [{ parts: [{ text: prompt }] }],
-        // El systemPrompt es opcional, así que solo lo añadimos si existe.
         ...(systemPrompt && { systemInstruction: { parts: [{ text: systemPrompt }] } }),
     };
 
