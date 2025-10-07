@@ -19,12 +19,8 @@ export default async function handler(req) {
             return new Response(JSON.stringify({ error: 'Método no permitido. Solo se aceptan solicitudes POST.' }), { status: 405 });
         }
 
-        // --- LA CORRECCIÓN ESTÁ AQUÍ ---
-        // Vercel entrega el cuerpo de la solicitud ya procesado en `req.body`
-        // en lugar de necesitar `await req.json()`.
         const { type, payload } = req.body;
 
-        // Verificación de que el cuerpo de la solicitud es correcto
         if (!type || !payload) {
              return new Response(JSON.stringify({ error: 'Solicitud mal formada.' }), { status: 400 });
         }
@@ -62,7 +58,9 @@ async function generateText(payload) {
     if (!prompt) {
         throw new Error("El 'prompt' es requerido para generar texto.");
     }
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+    // --- LA CORRECCIÓN ESTÁ AQUÍ ---
+    // Cambiamos 'gemini-1.5-flash-latest' por 'gemini-pro', un modelo estable y compatible.
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
     
     const requestBody = {
         contents: [{ parts: [{ text: prompt }] }],
