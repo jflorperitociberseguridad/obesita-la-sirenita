@@ -1,210 +1,138 @@
-// api/generate.js - Backend seguro y robusto para la API de Gemini
+// api/generate.js - Versión de Diagnóstico con Logs Detallados
 
-// --- FUNCIÓN PRINCIPAL (Handler de Vercel) ---
-export default async function handler(req) {
-    // --- PASO 1: Comprobación de Seguridad Esencial ---
-    // Verifica si la clave API está disponible. Si no, devuelve un error claro.
-    // Esta es la causa más común de fallos.
-    if (!process.env.GEMINI_API_KEY) {
-        console.error("Error Crítico: La variable de entorno GEMINI_API_KEY no está configurada en Vercel.");
-        return new Response(JSON.stringify({
-            error: "Error del servidor: La clave API no está configurada. Por favor, revisa la configuración en Vercel."
-        }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
+export default async function handler(req, res) {
+    // --- PASO 1: Inicio de la función y obtención de la clave ---
+    console.log("--- INICIO DE LA FUNCIÓN API ---");
+
+    // Añadimos cabeceras CORS para permitir la comunicación desde tu dominio
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Puedes restringirlo a tu dominio Vercel si lo deseas
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Manejo de la solicitud pre-vuelo OPTIONS
+    if (req.method === 'OPTIONS') {
+        console.log("Recibida solicitud OPTIONS (pre-vuelo). Respondiendo OK.");
+        return res.status(200).end();
+    }
+    
+    // Solo permitimos el método POST
+    if (req.method !== 'POST') {
+        console.error("Error: Se recibió un método no permitido:", req.method);
+        return res.status(405).json({ error: 'Método no permitido. Solo se acepta POST.' });
     }
 
-    // --- PASO 2: Procesamiento de la Solicitud del Cliente ---
+    const API_KEY = process.env.GEMINI_API_KEY;
+
+    if (!API_KEY) {
+        console.error("¡ERROR CRÍTICO! La variable de entorno GEMINI_API_KEY no se encontró.");
+        return res.status(500).json({ error: "Error del servidor: La clave API no está configurada en Vercel. Revisa las 'Environment Variables'." });
+    }
+    console.log("Clave API encontrada en las variables de entorno.");
+
     try {
-        if (req.method !== 'POST') {
-            return new Response(JSON.stringify({ error: 'Método no permitido. Solo se aceptan solicitudes POST.' }), { status: 405 });
+        // --- PASO 2: Procesar la solicitud del cliente ---
+        const { type, payload } = req.body;
+        console.log(`Petición recibida. Tipo: ${type}`);
+        console.log("Payload recibido:", JSON.stringify(payload, null, 2));
+
+        if (!type || !payload) {
+            console.error("Error: La solicitud no tiene 'type' o 'payload'.");
+            return res.status(400).json({ error: "Solicitud mal formada. Faltan 'type' o 'payload'." });
         }
 
-        const { type, payload } = await req.json();
-        
-        // --- PASO 3: Selección de la Tarea a Realizar ---
+        let apiUrl = '';
+        let apiPayload = {};
+
+        // --- PASO 3: Preparar la llamada a la API de Google correcta ---
         switch (type) {
             case 'generateStoryText':
-                return await generateStoryText(payload);
+                apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+                apiPayload = {
+                    contents: [{ parts: [{ text: payload.prompt }] }],
+                    systemInstruction: { parts: [{ text: payload.systemPrompt }] },
+                };
+                console.log("Configurando para generar texto de cuento.");
+                break;
+
             case 'generateImage':
-                return await generateImage(payload);
+                 apiUrl = `https://us-central1-aiplatform.googleapis.com/v1/projects/TU_ID_DE_PROYECTO_GOOGLE_CLOUD/locations/us-central1/publishers/google/models/imagegeneration:predict`;
+                apiPayload = {
+                    instances: [{ prompt: payload.prompt }],
+                    parameters: { "sampleCount": 1 }
+                };
+                console.log("Configurando para generar imagen. IMPORTANTE: Necesitas un token de acceso, no solo una API Key para este modelo.");
+                break;
+
             case 'generateAudio':
-                return await generateAudio(payload);
-            case 'explainValue':
-                return await explainValue(payload);
-            case 'getPlayIdeas':
-                return await getPlayIdeas(payload);
-            case 'continueStory':
-                 return await continueStory(payload);
+                apiUrl = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}`;
+                apiPayload = {
+                    input: { text: payload.prompt },
+                    voice: { languageCode: 'es-ES', name: 'es-ES-Wavenet-B' },
+                    audioConfig: { audioEncoding: 'MP3' }
+                };
+                console.log("Configurando para generar audio.");
+                break;
+            
             default:
-                return new Response(JSON.stringify({ error: 'Tipo de acción no válida.' }), { status: 400 });
+                console.error("Error: Tipo de solicitud desconocido:", type);
+                return res.status(400).json({ error: `Tipo de solicitud desconocido: ${type}` });
         }
-    } catch (error) {
-        console.error("Error inesperado en el handler principal:", error);
-        return new Response(JSON.stringify({
-            error: `Error interno del servidor: ${error.message}`
-        }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
+        
+        console.log("URL de la API de Google a la que se llamará:", apiUrl);
+        console.log("Payload que se enviará a Google:", JSON.stringify(apiPayload, null, 2));
+        
+        // --- PASO 4: Realizar la llamada a la API de Google ---
+        console.log("Realizando la llamada fetch a Google...");
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(apiPayload)
         });
+        
+        console.log(`Respuesta recibida de Google. Código de estado: ${response.status} ${response.statusText}`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("¡ERROR DE GOOGLE! La API devolvió un error:", errorText);
+            throw new Error(`Error en la API de Google (${response.status}): ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log("Datos JSON recibidos de Google procesados correctamente.");
+
+        // --- PASO 5: Devolver la respuesta al cliente ---
+        let result;
+        switch (type) {
+            case 'generateStoryText':
+            case 'continueStory':
+            case 'explainValue':
+            case 'getPlayIdeas':
+                result = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                break;
+            case 'generateImage':
+                result = `data:image/png;base64,${data.predictions?.[0]?.bytesBase64Encoded}`;
+                break;
+            case 'generateAudio':
+                result = `data:audio/mp3;base64,${data.audioContent}`;
+                break;
+        }
+
+        if (!result) {
+            console.error("Error: La respuesta de Google no contenía los datos esperados.");
+            console.log("Respuesta completa de Google:", JSON.stringify(data, null, 2));
+            throw new Error("Formato de respuesta de Google inesperado.");
+        }
+        
+        console.log("Respuesta preparada para enviar al cliente. ¡Éxito!");
+        console.log("--- FIN DE LA FUNCIÓN API ---");
+        return res.status(200).json({ result });
+
+    } catch (error) {
+        // --- MANEJO DE ERRORES ---
+        console.error("¡ERROR CATASTRÓFICO DENTRO DE LA FUNCIÓN!", error);
+        console.log("--- FIN DE LA FUNCIÓN API (CON ERROR) ---");
+        return res.status(500).send(`A server error occurred: ${error.message}`);
     }
-}
-
-
-// --- FUNCIONES DE LA API DE GEMINI ---
-
-const API_KEY = process.env.GEMINI_API_KEY;
-
-// Genera el texto de un cuento
-async function generateStoryText({ character, value, setting }) {
-    const systemPrompt = "Eres un escritor experto en cuentos infantiles para niños de 4 a 8 años. Tu estilo es tierno, positivo y visual. Escribe en español un cuento muy corto (entre 100 y 150 palabras) que tenga un final feliz y que enseñe un valor de forma clara y sencilla. El cuento debe ser fácil de leer en voz alta. Usa los elementos que te proporcionará el usuario.";
-    const userQuery = `El personaje principal es ${character}. El valor a enseñar es ${value}. El cuento sucede en ${setting}.`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
-    
-    const requestBody = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-    };
-
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) throw new Error(`Error en la API de texto: ${response.statusText}`);
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("No se pudo extraer el texto de la respuesta de la API.");
-    
-    return new Response(JSON.stringify({ text }), { headers: { 'Content-Type': 'application/json' } });
-}
-
-// Genera una ilustración para el cuento
-async function generateImage({ character, value, setting }) {
-    const imagePrompt = `A whimsical and colorful children's book illustration of: ${character}, in ${setting}. The scene visually represents the value of ${value}. Cute, vibrant, heartwarming, storybook style, soft lighting.`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
-    
-    const requestBody = {
-        instances: [{ prompt: imagePrompt }],
-        parameters: { "sampleCount": 1 }
-    };
-    
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) throw new Error(`Error en la API de imagen: ${response.statusText}`);
-    const data = await response.json();
-    const base64Data = data.predictions?.[0]?.bytesBase64Encoded;
-    if (!base64Data) throw new Error("No se recibió una imagen válida de la API.");
-    
-    const imageUrl = `data:image/png;base64,${base64Data}`;
-    return new Response(JSON.stringify({ imageUrl }), { headers: { 'Content-Type': 'application/json' } });
-}
-
-// Genera el audio de un texto
-async function generateAudio({ text }) {
-    const prompt = `Di con una voz dulce y amigable, como si contaras un cuento a un niño: ${text}`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
-    
-    const requestBody = {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ["AUDIO"] },
-        model: "gemini-2.5-flash-preview-tts"
-    };
-
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) throw new Error(`Error en la API TTS: ${response.statusText}`);
-    const data = await response.json();
-    const audioData = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    const mimeType = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
-
-    if (!audioData || !mimeType.startsWith("audio/")) throw new Error("Respuesta de audio inválida.");
-
-    return new Response(JSON.stringify({ audioData, mimeType }), { headers: { 'Content-Type': 'application/json' } });
-}
-
-// Explica un valor
-async function explainValue({ value }) {
-    const systemPrompt = "Actúa como un educador infantil. Explícame en español qué es un valor de una forma muy sencilla y con un ejemplo claro, como si se lo contaras a un niño de 5 años. Tu respuesta debe ser cálida, fácil de entender y un poco más detallada. Usa entre 80 y 120 palabras.";
-    const userQuery = `El valor es: "${value}".`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
-
-    const requestBody = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-    };
-    
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) throw new Error(`Error en la API de explicación: ${response.statusText}`);
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("No se pudo generar la explicación del valor.");
-    
-    return new Response(JSON.stringify({ text }), { headers: { 'Content-Type': 'application/json' } });
-}
-
-// Sugiere ideas para jugar
-async function getPlayIdeas({ value, explanation }) {
-    const systemPrompt = "Eres un pedagogo creativo y amigable. Basándote en el valor y su explicación, sugiere 2 o 3 actividades o juegos muy sencillos y prácticos que un padre pueda hacer con su hijo para poner en práctica ese valor. Escribe en español, en un formato de lista con puntos (usando '-' o '*'). Sé breve y directo.";
-    const userQuery = `El valor es "${value}" y la explicación que se le ha dado al niño es: "${explanation}". Dame ideas para jugar.`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
-    
-    const requestBody = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-    };
-    
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) throw new Error(`Error en la API de ideas: ${response.statusText}`);
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("No se pudieron generar las ideas de juego.");
-    
-    return new Response(JSON.stringify({ text }), { headers: { 'Content-Type': 'application/json' } });
-}
-
-// Continúa un cuento
-async function continueStory({ story }) {
-    const systemPrompt = "Eres un escritor de cuentos infantiles. Continúa la siguiente historia con un segundo párrafo corto (entre 80 y 120 palabras) que sea igual de emocionante y mantenga el mismo tono tierno y positivo. Escribe en español.";
-    const userQuery = `Continúa esta historia: "${story}"`;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
-    
-    const requestBody = {
-        contents: [{ parts: [{ text: userQuery }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-    };
-
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) throw new Error(`Error en la API de continuación: ${response.statusText}`);
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("No se pudo continuar la historia.");
-
-    return new Response(JSON.stringify({ text }), { headers: { 'Content-Type': 'application/json' } });
 }
 
