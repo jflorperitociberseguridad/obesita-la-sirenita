@@ -59,8 +59,8 @@ async function generateText(payload) {
         throw new Error("El 'prompt' es requerido para generar texto.");
     }
     // --- LA CORRECCIÓN FINAL ESTÁ AQUÍ ---
-    // Volvemos al modelo estándar y más compatible: 'gemini-pro'.
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+    // Usamos el modelo 'gemini-2.0-flash-001' que SÍ aparece en tu lista de Google Cloud.
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${API_KEY}`;
     
     const requestBody = {
         contents: [{ parts: [{ text: prompt }] }],
