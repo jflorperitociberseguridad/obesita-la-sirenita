@@ -1,209 +1,137 @@
-<?php
-/**
- * api/generate.php
- *
- * Backend seguro en PHP para gestionar todas las llamadas a la API de Gemini.
- * Este archivo actúa como un intermediario que recibe peticiones del frontend,
- * añade la clave secreta de la API y se comunica de forma segura con los servidores de Google.
- */
+// Este archivo va dentro de una carpeta llamada "api" -> /api/generate.js
 
-// --- CONFIGURACIÓN DE SEGURIDAD ---
+// Importamos la librería de Google para comunicarnos con los modelos Gemini
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// 1. Dominio permitido (CORS)
-// ¡IMPORTANTE! Cambia "https://obesitalasirenita.es" por el dominio exacto donde está alojada tu página.
-// Si estás probando en local, puedes usar "*" temporalmente, pero ¡NUNCA en producción!
-header("Access-Control-Allow-Origin: https://obesitalasirenita.es");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+// --- FUNCIÓN PRINCIPAL ---
+// Esta es la función que Vercel ejecutará en su servidor seguro
+export default async function handler(req, res) {
+  // --- Medidas de Seguridad ---
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido' });
+  }
 
-// Responde a las solicitudes de pre-vuelo (preflight) de los navegadores
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+  // Obtenemos la clave API secreta desde las variables de entorno de Vercel.
+  // ¡Este es el paso más importante de la configuración en Vercel!
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'La clave API de Gemini no está configurada en el servidor' });
+  }
 
-// 2. Clave de API de Gemini
-// ¡CRÍTICO! Reemplaza el texto de abajo con tu clave de API real.
-// La forma más segura es usar variables de entorno del servidor, pero para empezar, puedes ponerla aquí.
-// ¡NO compartas este archivo públicamente si tu clave está aquí!
-define('GEMINI_API_KEY', 'AIzaSyDv30B3iQ5iHaRnyXTFCtogJ2LdULCi1E0');
+  // Inicializamos el cliente de la API de Google para los modelos de texto
+  const genAI = new GoogleGenerativeAI(AIzaSyDv30B3iQ5iHaRnyXTFCtogJ2LdULCi1E0);
+  
+  // Extraemos el tipo de tarea y los parámetros del cuerpo de la petición
+  const { type, ...params } = req.body;
 
+  try {
+    // --- ENRUTADOR DE TAREAS ---
+    // Según el 'type' que nos envíe el frontend, realizamos una acción diferente
+    switch (type) {
+      
+      // --- Generación de Texto para Cuentos ---
+      case 'storyText': {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const systemPrompt = "Eres un escritor experto en cuentos infantiles para niños de 4 a 8 años. Tu estilo es tierno, positivo y visual. Escribe en español un cuento muy corto (entre 100 y 150 palabras) que tenga un final feliz y que enseñe un valor de forma clara y sencilla. El cuento debe ser fácil de leer en voz alta. Usa los elementos que te proporcionará el usuario.";
+        const userQuery = `El personaje principal es ${params.character}. El valor a enseñar es ${params.value}. El cuento sucede en ${params.setting}.`;
+        
+        const result = await model.generateContent([systemPrompt, userQuery]);
+        const text = result.response.text();
+        return res.status(200).json({ text });
+      }
 
-// --- FUNCIÓN CENTRAL PARA LLAMADAS A LA API ---
+      // --- Generación de Imágenes para Cuentos ---
+      case 'storyImage': {
+        const imagePrompt = `A whimsical and colorful children's book illustration of: ${params.character}, in ${params.setting}. The scene visually represents the value of ${params.value}. Cute, vibrant, heartwarming, storybook style, soft lighting.`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+        
+        const payload = { instances: [{ prompt: imagePrompt }], parameters: { "sampleCount": 1 } };
+        
+        const apiResponse = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-/**
- * Realiza una llamada cURL a una URL de la API de Google.
- * @param string $apiUrl La URL completa del endpoint de la API.
- * @param array $payload El cuerpo de la solicitud en formato de array PHP.
- * @return array Los datos de la respuesta decodificados.
- * @throws Exception Si la llamada a la API falla.
- */
-function callGoogleApi(string $apiUrl, array $payload): array {
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_TIMEOUT, 90); // Aumentar el tiempo de espera para la generación de imágenes
+        if (!apiResponse.ok) throw new Error(`Error en la API de Imagen: ${apiResponse.statusText}`);
 
-    $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curl_error = curl_error($ch);
-    curl_close($ch);
+        const result = await apiResponse.json();
+        const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
 
-    if ($curl_error) {
-        throw new Exception('Error de cURL: ' . $curl_error);
-    }
-    
-    $responseData = json_decode($response, true);
-
-    if ($http_code !== 200) {
-        $errorMessage = 'Error en la API de Google.';
-        if (isset($responseData['error']['message'])) {
-            $errorMessage = $responseData['error']['message'];
+        if (base64Data) {
+            return res.status(200).json({ imageUrl: `data:image/png;base64,${base64Data}` });
+        } else {
+            throw new Error("No se recibió una imagen válida de la API.");
         }
-        throw new Exception("Error HTTP {$http_code}: {$errorMessage}");
+      }
+
+      // --- Continuación de Cuentos ---
+      case 'continueStory': {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const systemPrompt = "Eres un escritor de cuentos infantiles. Continúa la siguiente historia de forma breve (unas 70-90 palabras), manteniendo el tono tierno y positivo. Añade un pequeño giro o un nuevo personaje amigo. Escribe en español.";
+        const result = await model.generateContent([systemPrompt, params.story]);
+        const text = result.response.text();
+        return res.status(200).json({ text });
+      }
+
+      // --- Explicación de Valores ---
+      case 'valueExplanation': {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const systemPrompt = "Actúa como un educador infantil. Explícame en español qué es un valor de una forma muy sencilla y con un ejemplo claro, como si se lo contaras a un niño de 5 años. Tu respuesta debe ser cálida, fácil de entender y un poco más detallada. Usa entre 80 y 120 palabras.";
+        const userQuery = `El valor es: "${params.value}".`;
+        const result = await model.generateContent([systemPrompt, userQuery]);
+        const text = result.response.text();
+        return res.status(200).json({ text });
+      }
+        
+      // --- Ideas para Jugar ---
+      case 'playIdeas': {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const systemPrompt = "Eres un pedagogo experto en juegos educativos. Dame 2 o 3 ideas de actividades o juegos muy sencillos para que padres e hijos hagan juntos en casa para practicar un valor. Usa un lenguaje cercano y explica cada juego en un párrafo corto. Formatea tu respuesta en HTML usando <ul> y <li> para la lista de juegos, y <strong> para los títulos de los juegos.";
+        const userQuery = `El valor a practicar es: "${params.value}".`;
+        const result = await model.generateContent([systemPrompt, userQuery]);
+        const text = result.response.text();
+        return res.status(200).json({ text });
+      }
+      
+      // --- Generación de Audio (Texto a Voz) ---
+       case 'tts': {
+        const prompt = `Di con una voz dulce y amigable, como si contaras un cuento a un niño: ${params.text}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+        
+        const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseModalities: ["AUDIO"] },
+            model: "gemini-2.5-flash-preview-tts"
+        };
+
+        const apiResponse = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!apiResponse.ok) throw new Error(`Error en la API TTS: ${apiResponse.statusText}`);
+        
+        const result = await apiResponse.json();
+        const audioData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        const mimeType = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
+
+        if (audioData && mimeType) {
+             return res.status(200).json({ audioData, mimeType });
+        } else {
+            throw new Error("Respuesta de audio inválida de la API.");
+        }
+       }
+
+      default:
+        return res.status(400).json({ error: 'Tipo de solicitud no válida' });
     }
 
-    return $responseData;
+  } catch (error) {
+    // Capturamos cualquier error que ocurra durante el proceso
+    console.error('Error en la función de Vercel:', error);
+    return res.status(500).json({ error: error.message || 'Error en el servidor al procesar la solicitud.' });
+  }
 }
 
-
-// --- LÓGICA PARA CADA TIPO DE PETICIÓN ---
-
-// Las siguientes funciones preparan el 'prompt' y el 'payload' para cada tarea específica.
-
-function generateStoryText(array $params): array {
-    $systemPrompt = "Eres un escritor experto en cuentos infantiles para niños de 4 a 8 años. Tu estilo es tierno, positivo y visual. Escribe en español un cuento muy corto (entre 100 y 150 palabras) que tenga un final feliz y que enseñe un valor de forma clara y sencilla. El cuento debe ser fácil de leer en voz alta. Usa los elementos que te proporcionará el usuario.";
-    $userQuery = "El personaje principal es {$params['character']}. El valor a enseñar es {$params['value']}. El cuento sucede en {$params['setting']}.";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . GEMINI_API_KEY;
-    $payload = [
-        'contents' => [['parts' => [['text' => $userQuery]]]],
-        'systemInstruction' => ['parts' => [['text' => $systemPrompt]]],
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
-    if (!$text) throw new Exception('No se pudo generar el texto del cuento.');
-    return ['text' => $text];
-}
-
-function generateStoryImage(array $params): array {
-    $imagePrompt = "A whimsical and colorful children's book illustration of: {$params['character']}, in {$params['setting']}. The scene visually represents the value of {$params['value']}. Cute, vibrant, heartwarming, storybook style, soft lighting.";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=' . GEMINI_API_KEY;
-    $payload = [
-        'instances' => [['prompt' => $imagePrompt]],
-        'parameters' => ['sampleCount' => 1]
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $base64Data = $result['predictions'][0]['bytesBase64Encoded'] ?? null;
-    if (!$base64Data) throw new Exception('No se recibió una imagen válida.');
-    return ['imageUrl' => 'data:image/png;base64,' . $base64Data];
-}
-
-function generateTTS(array $params): array {
-    $prompt = "Di con una voz dulce y amigable, como si contaras un cuento a un niño: {$params['text']}";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=' . GEMINI_API_KEY;
-    $payload = [
-        'contents' => [['parts' => [['text' => $prompt]]]],
-        'generationConfig' => ['responseModalities' => ['AUDIO']],
-        'model' => 'gemini-2.5-flash-preview-tts'
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $audioData = $result['candidates'][0]['content']['parts'][0]['inlineData']['data'] ?? null;
-    $mimeType = $result['candidates'][0]['content']['parts'][0]['inlineData']['mimeType'] ?? null;
-    if (!$audioData || !$mimeType) throw new Exception('Respuesta de audio inválida.');
-    return ['audioData' => $audioData, 'mimeType' => $mimeType];
-}
-
-function generateValueExplanation(array $params): array {
-    $systemPrompt = "Actúa como un educador infantil. Explícame en español qué es un valor de una forma muy sencilla y con un ejemplo claro, como si se lo contaras a un niño de 5 años. Tu respuesta debe ser cálida, fácil de entender y un poco más detallada. Usa entre 80 y 120 palabras.";
-    $userQuery = "El valor es: \"{$params['value']}\".";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . GEMINI_API_KEY;
-    $payload = [
-        'contents' => [['parts' => [['text' => $userQuery]]]],
-        'systemInstruction' => ['parts' => [['text' => $systemPrompt]]],
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
-    if (!$text) throw new Exception('No se pudo generar la explicación.');
-    return ['text' => $text];
-}
-
-function generateContinuedStory(array $params): array {
-    $systemPrompt = "Eres un escritor de cuentos infantiles. Continúa la siguiente historia en español de forma breve (un párrafo, 50-70 palabras), manteniendo el tono tierno y positivo del inicio. Crea un pequeño giro o una nueva acción para los personajes.";
-    $userQuery = "Continúa esta historia: \"{$params['story']}\"";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . GEMINI_API_KEY;
-    $payload = [
-        'contents' => [['parts' => [['text' => $userQuery]]]],
-        'systemInstruction' => ['parts' => [['text' => $systemPrompt]]],
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
-    if (!$text) throw new Exception('No se pudo continuar la historia.');
-    return ['text' => $text];
-}
-
-function generatePlayIdeas(array $params): array {
-    $systemPrompt = "Eres un pedagogo infantil. Para el valor proporcionado, sugiere 2 actividades o juegos muy simples que un padre pueda hacer con un niño de 5 años. Responde en español. Formatea la respuesta como una lista HTML no ordenada (`<ul>`). Cada `<li>` debe empezar con un emoji relacionado. Sé práctico, directo y usa un lenguaje cercano y amigable.";
-    $userQuery = "El valor es: \"{$params['value']}\".";
-    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . GEMINI_API_KEY;
-    $payload = [
-        'contents' => [['parts' => [['text' => $userQuery]]]],
-        'systemInstruction' => ['parts' => [['text' => $systemPrompt]]],
-    ];
-    $result = callGoogleApi($apiUrl, $payload);
-    $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
-    if (!$text) throw new Exception('No se pudieron generar ideas de juego.');
-    return ['text' => $text];
-}
-
-
-// --- PUNTO DE ENTRADA PRINCIPAL (ROUTER) ---
-
-header('Content-Type: application/json');
-
-try {
-    $input = json_decode(file_get_contents('php://input'), true);
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        throw new Exception('JSON inválido en la solicitud.');
-    }
-
-    $type = $input['type'] ?? null;
-    if (empty($type)) {
-        throw new Exception('Falta el "type" en la solicitud.');
-    }
-
-    $response_data = [];
-    switch ($type) {
-        case 'storyText':
-            $response_data = generateStoryText($input);
-            break;
-        case 'storyImage':
-            $response_data = generateStoryImage($input);
-            break;
-        case 'tts':
-            $response_data = generateTTS($input);
-            break;
-        case 'valueExplanation':
-            $response_data = generateValueExplanation($input);
-            break;
-        case 'continueStory':
-            $response_data = generateContinuedStory($input);
-            break;
-        case 'playIdeas':
-            $response_data = generatePlayIdeas($input);
-            break;
-        default:
-            throw new Exception("Tipo de solicitud no válido: {$type}");
-    }
-
-    http_response_code(200);
-    echo json_encode($response_data);
-
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
-}
-
-exit();
