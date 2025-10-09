@@ -173,7 +173,7 @@
                     </button>
                      <button class="value-btn flex flex-col items-center group" data-value="Ecología">
                         <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
-                            <i class="fas fa-leaf text-cyan-500 text-4xl"></i>
+                             <i class="fas fa-leaf text-cyan-500 text-4xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-blue-800">Ecología</h3>
                         <p class="text-gray-500 text-sm mt-1 px-2">Cuidar nuestro planeta, los mares y todos los seres vivos.</p>
@@ -270,9 +270,11 @@
                     <div id="generation-result" class="hidden mt-8">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                             <!-- Columna para el Texto del Cuento -->
-                            <div id="story-result-container" class="p-6 bg-white rounded-lg shadow-inner min-h-[280px] flex flex-col justify-center">
+                            <div id="story-result-container" class="p-6 bg-white rounded-lg shadow-inner min-h-[280px] flex flex-col justify-center space-y-4">
                                 <div id="story-loader" class="loader mx-auto hidden"></div>
                                 <p id="story-content" class="text-gray-700 leading-relaxed"></p>
+                                <div id="continued-story-loader" class="loader mx-auto hidden"></div>
+                                <p id="continued-story-content" class="text-gray-600 leading-relaxed border-t pt-4 mt-4 border-dashed"></p>
                                 <p id="story-error" class="text-red-500 font-semibold text-center"></p>
                             </div>
                             <!-- Columna para la Imagen del Cuento -->
@@ -283,7 +285,7 @@
                             </div>
                         </div>
                         <!-- Botones de Acción -->
-                        <div id="generation-actions-container" class="flex flex-col sm:flex-row justify-center items-center gap-4 text-center mt-8 hidden">
+                        <div id="generation-actions-container" class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 text-center mt-8 hidden">
                             <button id="listenStoryBtn" class="bg-purple-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-purple-600 transition-transform hover:scale-105 shadow-lg flex items-center justify-center w-full sm:w-auto">
                                 <span class="btn-icon"><i class="fas fa-volume-high mr-3"></i></span>
                                 <span class="btn-text">Escuchar Cuento</span>
@@ -292,11 +294,15 @@
                                 <i class="fas fa-envelope mr-3"></i>
                                 <span>Recibir por Email</span>
                             </button>
+                            <button id="continueStoryBtn" class="bg-cyan-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-cyan-600 transition-transform hover:scale-105 shadow-lg flex items-center justify-center w-full sm:w-auto">
+                                <i class="fas fa-wand-magic-sparkles mr-3"></i>
+                                <span>✨ Continuar Aventura</span>
+                            </button>
                         </div>
                     </div>
                      <div id="initial-placeholder" class="mt-8 p-6 bg-white/50 rounded-lg shadow-inner min-h-[150px] flex items-center justify-center">
-                         <p class="text-gray-500 text-center">Aquí aparecerá tu mágica historia e ilustración...</p>
-                    </div>
+                          <p class="text-gray-500 text-center">Aquí aparecerá tu mágica historia e ilustración...</p>
+                     </div>
 
                 </div>
             </div>
@@ -545,15 +551,28 @@
                     <span id="value-modal-icon"></span>
                     <span id="value-modal-title"></span>
                 </h3>
-                <div id="value-modal-loader" class="loader mx-auto my-6"></div>
+                <div id="value-modal-loader" class="loader mx-auto my-6 hidden"></div>
                 <p id="value-modal-text" class="text-gray-700 text-lg leading-relaxed"></p>
-                <div id="value-audio-container" class="mt-6 hidden">
-                    <button id="listenValueBtn" class="bg-purple-500 text-white px-6 py-2 rounded-full font-bold hover:bg-purple-600 transition shadow-lg flex items-center justify-center w-auto mx-auto">
+                
+                <!-- Contenedor para las ideas de juego -->
+                <div id="play-ideas-container" class="hidden mt-6 text-left p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
+                    <h4 class="font-bold text-green-800 text-lg mb-2">💡 Ideas para Jugar:</h4>
+                    <div id="play-ideas-loader" class="loader mx-auto my-4 hidden" style="width: 30px; height: 30px; border-top-color: #34d399;"></div>
+                    <div id="play-ideas-content" class="text-green-700 space-y-2"></div>
+                    <p id="play-ideas-error" class="text-red-500 font-semibold"></p>
+                </div>
+                
+                <div id="value-audio-container" class="mt-6 hidden flex-col sm:flex-row gap-4 justify-center">
+                    <button id="listenValueBtn" class="bg-purple-500 text-white px-6 py-2 rounded-full font-bold hover:bg-purple-600 transition shadow-lg flex items-center justify-center w-auto mx-auto sm:mx-0">
                         <span class="btn-icon"><i class="fas fa-volume-high mr-2"></i></span>
                         <span class="btn-text">Escuchar</span>
                     </button>
+                    <button id="getPlayIdeasBtn" class="bg-green-500 text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition shadow-lg flex items-center justify-center w-auto mx-auto sm:mx-0">
+                        <span class="btn-icon"><i class="fas fa-puzzle-piece mr-2"></i></span>
+                        <span class="btn-text">Ideas para Jugar</span>
+                    </button>
                 </div>
-                <p id="value-modal-error" class="text-red-500 font-semibold"></p>
+                <p id="value-modal-error" class="text-red-500 font-semibold mt-4"></p>
             </div>
         </div>
     </div>
@@ -690,8 +709,37 @@
         const emailStoryStatus = document.getElementById('emailStoryStatus');
         if(emailStoryForm) emailStoryForm.addEventListener('submit', (e) => handleFormSubmit(e, emailStoryForm, emailStoryStatus));
 
+        // --- Lógica Centralizada de Llamadas a la API ---
+        async function callApi(type, payload) {
+            // Esta función es la única que habla con nuestro "motor" en Vercel.
+            // Envía un objeto JSON con un 'type' (qué queremos hacer) y un 'payload' (los datos).
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, payload })
+                });
 
-        // --- Lógica del Generador de Cuentos e Imágenes con Gemini API ---
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        // Si la respuesta de error no es JSON, usa el texto de estado.
+                        errorData = { error: response.statusText };
+                    }
+                    throw new Error(errorData.error || `Error del servidor: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error(`Error en la llamada API para '${type}':`, error);
+                throw new Error(error.message || 'Error de conexión con el servidor.');
+            }
+        }
+
+
+        // --- Lógica del Generador de Cuentos ---
         const generateStoryBtn = document.getElementById('generateStoryBtn');
         const initialPlaceholder = document.getElementById('initial-placeholder');
         const generationResultDiv = document.getElementById('generation-result');
@@ -706,128 +754,129 @@
 
         const generationActionsContainer = document.getElementById('generation-actions-container');
         const listenStoryBtn = document.getElementById('listenStoryBtn');
+        const continueStoryBtn = document.getElementById('continueStoryBtn');
+        const continuedStoryLoader = document.getElementById('continued-story-loader');
+        const continuedStoryContent = document.getElementById('continued-story-content');
 
         let currentStoryAudio = null;
 
+        if (generateStoryBtn) {
+            generateStoryBtn.addEventListener('click', generateStoryAndImage);
+        }
+        
         async function generateStoryAndImage() {
             const character = document.getElementById('story-character').value;
             const value = document.getElementById('story-value').value;
             const setting = document.getElementById('story-setting').value;
 
             if (!character || !value || !setting) {
-                alert("Por favor, completa todos los campos para crear tu historia.");
+                valueModalError.textContent = "Por favor, completa todos los campos para crear tu historia.";
                 return;
             }
             
+            // Reset UI
             initialPlaceholder.classList.add('hidden');
             generationResultDiv.classList.remove('hidden');
-
-            // Reset UI and show loaders
+            generationActionsContainer.classList.add('hidden');
             storyContent.textContent = "";
             storyError.textContent = "";
-            storyLoader.classList.remove('hidden');
-            
+            continuedStoryContent.textContent = "";
             storyImage.classList.add('hidden');
             imageError.textContent = "";
+
+            storyLoader.classList.remove('hidden');
             imageLoader.classList.remove('hidden');
             
-            generationActionsContainer.classList.add('hidden');
-
             generateStoryBtn.disabled = true;
             generateStoryBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
             try {
-                // Parallel execution of text and image generation
-                const [storyText, imageData] = await Promise.all([
-                    generateStoryText(character, value, setting),
-                    generateImageForStory(character, value, setting)
+                // Preparamos los 'payloads' para cada llamada a la API
+                const storyPayload = {
+                    prompt: `El personaje principal es ${character}. El valor a enseñar es ${value}. El cuento sucede en ${setting}.`,
+                    systemPrompt: "Eres un escritor experto en cuentos infantiles para niños de 4 a 8 años. Tu estilo es tierno, positivo y visual. Escribe en español un cuento muy corto (entre 100 y 150 palabras) que tenga un final feliz y que enseñe un valor de forma clara y sencilla. El cuento debe ser fácil de leer en voz alta. Usa los elementos que te proporcionará el usuario."
+                };
+
+                const imagePayload = {
+                    prompt: `A whimsical and colorful children's book illustration of: ${character}, in ${setting}. The scene visually represents the value of ${value}. Cute, vibrant, heartwarming, storybook style, soft lighting.`
+                };
+
+                // Lanzamos ambas peticiones en paralelo
+                const [storyResponse, imageResponse] = await Promise.allSettled([
+                    callApi('generateText', storyPayload),
+                    callApi('generateImage', imagePayload)
                 ]);
                 
-                // Display results
-                storyContent.textContent = storyText;
-                storyImage.src = imageData;
-                storyImage.classList.remove('hidden');
-                
-                // Show action buttons
-                document.getElementById('storyTextData').value = storyText;
-                document.getElementById('storyImageData').value = imageData;
-                generationActionsContainer.classList.remove('hidden');
+                // Procesamos el resultado del texto
+                if (storyResponse.status === 'fulfilled' && storyResponse.value.text) {
+                    storyContent.textContent = storyResponse.value.text;
+                } else {
+                    storyError.textContent = "No se pudo generar el texto del cuento.";
+                    console.error("Error en la generación de texto:", storyResponse.reason);
+                }
+                storyLoader.classList.add('hidden');
+
+                // Procesamos el resultado de la imagen
+                if (imageResponse.status === 'fulfilled' && imageResponse.value.imageUrl) {
+                    storyImage.src = imageResponse.value.imageUrl;
+                    storyImage.classList.remove('hidden');
+                } else {
+                    imageError.textContent = "No se pudo crear la ilustración.";
+                     console.error("Error en la generación de imagen:", imageResponse.reason);
+                }
+                imageLoader.classList.add('hidden');
+
+                // Si al menos una de las dos tuvo éxito, mostramos los botones de acción
+                if (storyResponse.status === 'fulfilled' || imageResponse.status === 'fulfilled') {
+                    generationActionsContainer.classList.remove('hidden');
+                }
 
             } catch (error) {
-                console.error("Error during generation process:", error);
-                storyError.textContent = error.message.includes('texto') ? error.message : "¡Oh no! Hubo un error mágico.";
-                imageError.textContent = error.message.includes('imagen') ? error.message : "No se pudo ilustrar el cuento.";
+                storyError.textContent = "Ocurrió un error inesperado.";
+                imageError.textContent = "Inténtalo de nuevo más tarde.";
             } finally {
-                // Restore UI
-                storyLoader.classList.add('hidden');
-                imageLoader.classList.add('hidden');
                 generateStoryBtn.disabled = false;
                 generateStoryBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
-
-        async function generateStoryText(character, value, setting) {
-            const systemPrompt = "Eres un escritor experto en cuentos infantiles para niños de 4 a 8 años. Tu estilo es tierno, positivo y visual. Escribe en español un cuento muy corto (entre 100 y 150 palabras) que tenga un final feliz y que enseñe un valor de forma clara y sencilla. El cuento debe ser fácil de leer en voz alta. Usa los elementos que te proporcionará el usuario.";
-            const userQuery = `El personaje principal es ${character}. El valor a enseñar es ${value}. El cuento sucede en ${setting}.`;
-            const apiKey = ""; // Leave empty
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) throw new Error(`Error generando el texto: ${response.statusText}`);
-            
-            const result = await response.json();
-            const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-            if (generatedText) {
-                return generatedText;
-            } else {
-                throw new Error("No se pudo generar el texto del cuento.");
-            }
-        }
-
-        async function generateImageForStory(character, value, setting) {
-            const imagePrompt = `A whimsical and colorful children's book illustration of: ${character}, in ${setting}. The scene visually represents the value of ${value}. Cute, vibrant, heartwarming, storybook style, soft lighting.`;
-            const apiKey = ""; // Leave empty
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
-            
-            const payload = { 
-                instances: [{ prompt: imagePrompt }],
-                parameters: { "sampleCount": 1 } 
-            };
-            
-            try {
-                 const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error(`Error generando la imagen: ${response.statusText}`);
-
-                const result = await response.json();
-                const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
-
-                if (base64Data) {
-                    return `data:image/png;base64,${base64Data}`;
-                } else {
-                    throw new Error("No se recibió una imagen válida.");
+        
+        // --- Lógica para Escuchar y Continuar Cuento ---
+        if (listenStoryBtn) {
+            listenStoryBtn.addEventListener('click', () => {
+                const textToSpeak = storyContent.textContent + " " + continuedStoryContent.textContent;
+                if (textToSpeak.trim()) {
+                     generateAndPlayAudio(textToSpeak, listenStoryBtn, currentStoryAudio);
                 }
-            } catch (error) {
-                console.error("Image generation failed:", error);
-                throw new Error("No se pudo crear la ilustración.");
-            }
+            });
+        }
+        
+        if(continueStoryBtn) {
+            continueStoryBtn.addEventListener('click', async () => {
+                const originalStory = storyContent.textContent;
+                if (!originalStory) return;
+
+                continuedStoryLoader.classList.remove('hidden');
+                continueStoryBtn.disabled = true;
+                continueStoryBtn.classList.add('opacity-50');
+                
+                try {
+                    const payload = {
+                        prompt: `Continúa esta historia: "${originalStory}"`,
+                        systemPrompt: "Eres un escritor de cuentos infantiles. Continúa la siguiente historia con un segundo párrafo corto (entre 80 y 120 palabras) que sea igual de emocionante y mantenga el mismo tono tierno y positivo. Escribe en español."
+                    };
+                    const data = await callApi('generateText', payload);
+                    continuedStoryContent.textContent = data.text;
+                } catch(error) {
+                    continuedStoryContent.textContent = "No se pudo continuar la historia. Inténtalo de nuevo.";
+                } finally {
+                    continuedStoryLoader.classList.add('hidden');
+                    continueStoryBtn.disabled = false;
+                    continueStoryBtn.classList.remove('opacity-50');
+                }
+            });
         }
 
+        // --- Lógica de Audio Genérica ---
         function base64ToArrayBuffer(base64) {
             const binaryString = window.atob(base64);
             const len = binaryString.length;
@@ -846,34 +895,26 @@
             const dataSize = pcmData.length * (bitsPerSample / 8);
             const buffer = new ArrayBuffer(44 + dataSize);
             const view = new DataView(buffer);
-
-            // RIFF header
             view.setUint32(0, 0x52494646, false); // "RIFF"
             view.setUint32(4, 36 + dataSize, true);
             view.setUint32(8, 0x57415645, false); // "WAVE"
-            // "fmt " sub-chunk
             view.setUint32(12, 0x666d7420, false); // "fmt "
-            view.setUint32(16, 16, true); // Sub-chunk size
-            view.setUint16(20, 1, true); // Audio format (1=PCM)
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
             view.setUint16(22, numChannels, true);
             view.setUint32(24, sampleRate, true);
             view.setUint32(28, byteRate, true);
             view.setUint16(32, blockAlign, true);
             view.setUint16(34, bitsPerSample, true);
-            // "data" sub-chunk
             view.setUint32(36, 0x64617461, false); // "data"
             view.setUint32(40, dataSize, true);
-
-            // Write PCM data
             for (let i = 0; i < pcmData.length; i++) {
                 view.setInt16(44 + i * 2, pcmData[i], true);
             }
-
             return new Blob([view], { type: "audio/wav" });
         }
-
-        async function generateAndPlayAudio(text, btn, audioInstanceRef) {
-             let audioInstance = audioInstanceRef.current;
+        
+        async function generateAndPlayAudio(text, btn, audioInstance) {
              if (audioInstance && !audioInstance.paused) {
                 audioInstance.pause();
                 return;
@@ -886,85 +927,57 @@
             const btnIcon = btn.querySelector('.btn-icon');
             const btnText = btn.querySelector('.btn-text');
             const originalIconHTML = btnIcon.innerHTML;
+            const originalText = btnText.textContent;
+            
             btnIcon.innerHTML = `<div class="btn-loader"></div>`;
             btnText.textContent = 'Generando...';
             btn.disabled = true;
 
             try {
-                const prompt = `Di con una voz dulce y amigable, como si contaras un cuento a un niño: ${text}`;
                 const payload = {
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { responseModalities: ["AUDIO"] },
-                    model: "gemini-2.5-flash-preview-tts"
+                    prompt: `Di con una voz dulce y amigable, como si contaras un cuento a un niño: ${text}`
                 };
-                const apiKey = ""; // Leave empty
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                const data = await callApi('generateAudio', payload);
 
-                if (!response.ok) throw new Error(`Error en la API TTS: ${response.statusText}`);
+                const { audioData, mimeType } = data;
+                if (!audioData || !mimeType) throw new Error("Datos de audio inválidos");
 
-                const result = await response.json();
-                const audioData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-                const mimeType = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
-
-                if (!audioData || !mimeType.startsWith("audio/")) {
-                    throw new Error("Respuesta de audio inválida.");
-                }
-                
                 const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
                 const pcmData = base64ToArrayBuffer(audioData);
                 const pcm16 = new Int16Array(pcmData);
                 const wavBlob = pcmToWav(pcm16, sampleRate);
                 const audioUrl = URL.createObjectURL(wavBlob);
                 
-                audioInstanceRef.current = new Audio(audioUrl);
-                audioInstanceRef.current.play();
+                audioInstance = new Audio(audioUrl);
+                
+                audioInstance.play();
                 
                 btnText.textContent = 'Pausar';
                 btnIcon.innerHTML = `<i class="fas fa-pause mr-2"></i>`;
                 
-                audioInstanceRef.current.onpause = () => {
+                audioInstance.onpause = () => {
                     btnText.textContent = 'Reanudar';
                     btnIcon.innerHTML = originalIconHTML;
                 };
-
-                audioInstanceRef.current.onplay = () => {
+                audioInstance.onplay = () => {
                     btnText.textContent = 'Pausar';
                     btnIcon.innerHTML = `<i class="fas fa-pause mr-2"></i>`;
                 };
-
-                audioInstanceRef.current.onended = () => {
-                    btnText.textContent = btn.id === 'listenStoryBtn' ? 'Escuchar de Nuevo' : 'Escuchar';
+                audioInstance.onended = () => {
+                    btnText.textContent = originalText.includes('Nuevo') ? originalText : originalText.replace('Escuchar', 'Escuchar de Nuevo');
                     btnIcon.innerHTML = originalIconHTML;
-                    audioInstanceRef.current = null;
+                    audioInstance = null;
                 };
 
             } catch (error) {
-                console.error("Error generating audio:", error);
-                alert("No se pudo generar el audio.");
-                btnText.textContent = btn.id === 'listenStoryBtn' ? 'Escuchar Cuento' : 'Escuchar';
+                valueModalError.textContent = "No se pudo generar el audio. Inténtalo de nuevo.";
+                btnText.textContent = originalText;
                 btnIcon.innerHTML = originalIconHTML;
             } finally {
                 btn.disabled = false;
             }
         }
 
-        if(generateStoryBtn) {
-            generateStoryBtn.addEventListener('click', generateStoryAndImage);
-        }
-
-        if(listenStoryBtn) {
-            listenStoryBtn.addEventListener('click', () => {
-                const text = storyContent.textContent;
-                if(text) generateAndPlayAudio(text, listenStoryBtn, { current: currentStoryAudio });
-            });
-        }
-        
         // --- Lógica para el Modal de Explicación de Valores ---
         const valueExplanationModal = document.getElementById('valueExplanationModal');
         const closeValueExplanationModal = document.getElementById('closeValueExplanationModal');
@@ -976,7 +989,13 @@
         const valueModalError = document.getElementById('value-modal-error');
         const valueAudioContainer = document.getElementById('value-audio-container');
         const listenValueBtn = document.getElementById('listenValueBtn');
-        let currentValueAudio = { current: null };
+        const getPlayIdeasBtn = document.getElementById('getPlayIdeasBtn');
+        const playIdeasContainer = document.getElementById('play-ideas-container');
+        const playIdeasLoader = document.getElementById('play-ideas-loader');
+        const playIdeasContent = document.getElementById('play-ideas-content');
+        const playIdeasError = document.getElementById('play-ideas-error');
+
+        let currentValueAudio = null;
 
         const showValueModal = () => {
             valueExplanationModal.classList.remove('invisible', 'opacity-0');
@@ -984,18 +1003,17 @@
         };
 
         const hideValueModal = () => {
-            if (currentValueAudio.current) {
-                currentValueAudio.current.pause();
-                currentValueAudio.current = null;
+            if (currentValueAudio) {
+                currentValueAudio.pause();
+                currentValueAudio = null;
             }
             valueExplanationModal.classList.add('opacity-0');
             valueExplanationModal.querySelector('div').classList.add('scale-95');
             setTimeout(() => valueExplanationModal.classList.add('invisible'), 500);
         };
 
-        if (closeValueExplanationModal) {
-            closeValueExplanationModal.addEventListener('click', hideValueModal);
-        }
+        if (closeValueExplanationModal) closeValueExplanationModal.addEventListener('click', hideValueModal);
+        
         valueExplanationModal.addEventListener('click', (e) => {
             if (e.target === valueExplanationModal) hideValueModal();
         });
@@ -1007,68 +1025,80 @@
                 getExplanationForValue(value, iconHTML);
             });
         });
-
+        
         async function getExplanationForValue(value, iconHTML) {
             // Reset and show modal
             valueModalTitle.textContent = value;
             valueModalIcon.innerHTML = iconHTML;
             valueModalText.textContent = "";
             valueModalError.textContent = "";
-            valueModalLoader.classList.remove('hidden');
             valueAudioContainer.classList.add('hidden');
-            if (currentValueAudio.current) {
-                currentValueAudio.current.pause();
-                currentValueAudio.current = null;
-            }
-            showValueModal();
+            playIdeasContainer.classList.add('hidden');
+            playIdeasContent.innerHTML = "";
+            playIdeasError.textContent = "";
 
-            const systemPrompt = "Actúa como un educador infantil. Explícame en español qué es un valor de una forma muy sencilla y con un ejemplo claro, como si se lo contaras a un niño de 5 años. Tu respuesta debe ser cálida, fácil de entender y un poco más detallada. Usa entre 80 y 120 palabras.";
-            const userQuery = `El valor es: "${value}".`;
-            const apiKey = ""; // Leave empty
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            if (currentValueAudio) {
+                currentValueAudio.pause();
+                currentValueAudio = null;
+            }
+            
+            showValueModal();
+            valueModalLoader.classList.remove('hidden');
 
             try {
                 const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    prompt: `El valor es: "${value}".`,
+                    systemPrompt: "Actúa como un educador infantil. Explícame en español qué es un valor de una forma muy sencilla y con un ejemplo claro, como si se lo contaras a un niño de 5 años. Tu respuesta debe ser cálida, fácil de entender y un poco más detallada. Usa entre 80 y 120 palabras."
                 };
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API error: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (generatedText) {
-                    valueModalText.textContent = generatedText;
-                    valueModalLoader.classList.add('hidden');
+                const data = await callApi('generateText', payload);
+                
+                if (data.text) {
+                    valueModalText.textContent = data.text;
                     valueAudioContainer.classList.remove('hidden');
-
-                    const newBtn = listenValueBtn.cloneNode(true);
-                    listenValueBtn.parentNode.replaceChild(newBtn, listenValueBtn);
-                    
-                    newBtn.addEventListener('click', () => {
-                        generateAndPlayAudio(generatedText, newBtn, currentValueAudio);
-                    });
-
                 } else {
-                    throw new Error("No se pudo generar la explicación.");
+                    throw new Error("La respuesta no contiene texto.");
                 }
             } catch (error) {
-                console.error("Error calling Gemini API for value explanation:", error);
-                valueModalError.textContent = "¡Oh, no! Hubo un problema explicando este valor. Por favor, inténtalo de nuevo.";
+                valueModalError.textContent = error.message || "¡Oh, no! Hubo un problema explicando este valor.";
             } finally {
                 valueModalLoader.classList.add('hidden');
             }
         }
-
+        
+        if (listenValueBtn) {
+            listenValueBtn.addEventListener('click', () => {
+                const text = valueModalText.textContent;
+                if (text) generateAndPlayAudio(text, listenValueBtn, currentValueAudio);
+            });
+        }
+        
+        if(getPlayIdeasBtn) {
+            getPlayIdeasBtn.addEventListener('click', async () => {
+                const value = valueModalTitle.textContent;
+                const explanation = valueModalText.textContent;
+                if(!value || !explanation) return;
+                
+                playIdeasContainer.classList.remove('hidden');
+                playIdeasLoader.classList.remove('hidden');
+                playIdeasContent.innerHTML = "";
+                playIdeasError.textContent = "";
+                getPlayIdeasBtn.disabled = true;
+                
+                try {
+                    const payload = {
+                        prompt: `El valor es "${value}" y la explicación que se le ha dado al niño es: "${explanation}". Dame ideas para jugar.`,
+                        systemPrompt: "Eres un pedagogo creativo y amigable. Basándote en el valor y su explicación, sugiere 2 o 3 actividades o juegos muy sencillos y prácticos que un padre pueda hacer con su hijo para poner en práctica ese valor. Escribe en español, en un formato de lista con puntos (usando '-' o '*'). Sé breve y directo."
+                    };
+                    const data = await callApi('generateText', payload);
+                    playIdeasContent.innerHTML = data.text.replace(/\n/g, '<br>');
+                } catch(error) {
+                    playIdeasError.textContent = "No se pudieron generar las ideas."
+                } finally {
+                    playIdeasLoader.classList.add('hidden');
+                    getPlayIdeasBtn.disabled = false;
+                }
+            });
+        }
 
         // --- Actualizar año en el footer ---
         document.getElementById('year').textContent = new Date().getFullYear();
