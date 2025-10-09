@@ -2,6 +2,30 @@
 <html lang="es" class="scroll-smooth"> <!-- Habilita el desplazamiento suave en toda la página -->
 <head>
     <meta charset="UTF-8">
+    <!-- ========================================= -->
+<!-- 🧭 SEO Y REDES SOCIALES - OBESITA LA SIRENITA -->
+<!-- ========================================= -->
+<meta name="author" content="Ana Alicia Gutiérrez Rupérez">
+<meta name="keywords" content="cuento infantil, autoestima, valores, educación emocional, diversidad, ecología, amistad, Obesita la Sirenita, cuentos educativos, libro para niños">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#3b82f6">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content="Obesita la Sirenita - Cuentos Infantiles con Valores">
+<meta property="og:description" content="Sumérgete en el mágico mundo de Obesita la Sirenita, una historia que enseña a los niños autoestima, respeto, amistad y amor por el planeta.">
+<meta property="og:image" content="https://obesitalasirenita.es/img/obesita-og.jpg">
+<meta property="og:url" content="https://obesitalasirenita.es/">
+<meta property="og:type" content="website">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obesita la Sirenita - Cuentos Infantiles con Valores">
+<meta name="twitter:description" content="Una aventura submarina que enseña a los más pequeños valores esenciales para la vida.">
+<meta name="twitter:image" content="https://obesitalasirenita.es/img/obesita-og.jpg">
+
+<!-- Favicon -->
+<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obesita la Sirenita - Cuentos Infantiles con Valores</title>
     <meta name="description" content="Descubre los cuentos de Obesita la Sirenita. Una aventura submarina que enseña a los niños valores como el respeto, la diversidad, la amistad y el amor propio.">
