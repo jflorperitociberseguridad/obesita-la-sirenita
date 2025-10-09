@@ -1,0 +1,28 @@
+# =========================================
+# 🤖 Robots.txt para Obesita la Sirenita
+# Autor: Francisco Javier Flor González
+# Sitio: https://obesitalasirenita.es
+# Fecha: 2025
+# =========================================
+
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+# Permitir todo el contenido público
+Allow: /
+
+# Evitar indexar carpetas técnicas
+Disallow: /api/
+Disallow: /tmp/
+Disallow: /private/
+
+# Sitemap XML (importante para SEO)
+Sitemap: https://obesitalasirenita.es/sitemap.xml
+
+# Enlace al feed RSS (si más adelante se usa WordPress o blog)
+Allow: /feed/
+
+# Comentario:
+# Este sitio promueve educación y valores infantiles a través de la historia
+# de Obesita la Sirenita. Se permite indexar todas las páginas públicas.
